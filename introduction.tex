@@ -1,0 +1,76 @@
+\documentclass[12pt,a4paper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times} 
+\usepackage[margin=3cm,left=3.5cm]{geometry} 
+\usepackage{setspace} 
+\usepackage{graphicx} 
+\usepackage[labelfont=bf]{caption} 
+
+% --- BIBLIOGRAPHY SETTINGS (Updated for Biber) ---
+\usepackage{natbib}
+\usepackage{hyperref} 
+
+% Line spacing (1.5)
+\setstretch{1.5}
+
+% Customize hyperref colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+\begin{document}
+
+% Custom title page
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    
+    {\Huge\bfseries A Systematic Computational Screening for Conserved Protein Domain-Associated Structured RNAs\par}
+    \vspace{2cm}
+    
+    {\Large Daniel Dachs\par}
+    \vspace{1.5cm}
+    
+    {\large BIOC 490\par}
+    \vspace{1cm}
+    
+    {\large Supervisor: Ass. Prof. Paul Gardner\par}
+    \vspace{1cm}
+    
+    {\large Department of Biochemistry\par}
+    {\large University of Otago\par}
+    \vspace{1cm}
+    
+    \vfill
+\end{titlepage}
+
+\section{Introduction} 
+
+This introduction provides the background and rationale for [brief description]. The proposed project aims to [state what you are going to do].
+
+% Example of citing (Works with biblatex + natbib=true)
+According to \citet{smith2020}, this phenomenon has been well documented.
+Studies have shown multiple trends \citep{smith2020}.
+
+\subsection{[Relevant subtopic 1]}
+[Content here]
+
+\subsection{Project Aims}
+The main aims of this project are:
+\begin{enumerate}
+    \item \textbf{Aim 1:} [Description]
+    \item \textbf{Aim 2:} [Description]
+\end{enumerate}
+
+% --- FIXED REFERENCE SECTION ---
+\newpage
+\bibliographystyle{apalike}
+\bibliography{references} % Your .bib file name here
+
+\end{document}
