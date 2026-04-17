@@ -1,17 +1,18 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt]{article}
 
 % Packages
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{times} 
-\usepackage[margin=3cm,left=3.5cm]{geometry} 
-\usepackage{setspace} 
-\usepackage{graphicx} 
-\usepackage[labelfont=bf]{caption} 
-
-% --- BIBLIOGRAPHY SETTINGS (Updated for Biber) ---
-\usepackage{natbib}
-\usepackage{hyperref} 
+\usepackage{times} % Times New Roman font
+\usepackage[margin=3cm,left=3.5cm]{geometry} % Set margins
+\usepackage{setspace} % For line spacing
+\usepackage{graphicx} % For including figures
+\usepackage[labelfont=bf]{caption} % Bold figure labels
+\usepackage{natbib} % For bibliography management
+\usepackage{hyperref} % For hyperlinks
+\usepackage{titling} % For custom title page
+\usepackage{float} % For figure placement control
+\usepackage[font=small,labelfont=bf]{caption}
 
 % Line spacing (1.5)
 \setstretch{1.5}
@@ -24,23 +25,24 @@
     urlcolor=blue
 }
 
+\setlength{\parindent}{0pt}
+
 \begin{document}
 
-% Custom title page
 \begin{titlepage}
     \centering
     \vspace*{3cm}
     
-    {\Huge\bfseries A Systematic Computational Screening for Conserved Protein Domain-Associated Structured RNAs\par}
+    {\Huge\bfseries An Evolution-Driven Computational Screening for RNA Motifs\par}
     \vspace{2cm}
     
     {\Large Daniel Dachs\par}
     \vspace{1.5cm}
     
-    {\large BIOC 490\par}
+    {\large BIOC490\par}
     \vspace{1cm}
     
-    {\large Supervisor: Ass. Prof. Paul Gardner\par}
+    {\large Supervisor: Paul Gardner\par}
     \vspace{1cm}
     
     {\large Department of Biochemistry\par}
@@ -50,27 +52,68 @@
     \vfill
 \end{titlepage}
 
-\section{Introduction} 
+% Main content starts here
+\section{Introduction}
 
-This introduction provides the background and rationale for [brief description]. The proposed project aims to [state what you are going to do].
+\citet{RN54} has shown that this phenomenon is well documented.
 
-% Example of citing (Works with biblatex + natbib=true)
-According to \citet{smith2020}, this phenomenon has been well documented.
-Studies have shown multiple trends \citep{smith2020}.
+% Opening paragraph - state what you're introducing in 1-2 sentences at the end
+This introduction provides the background and rationale for [brief description of your project area]. [Additional context about the broader field or problem]. The proposed project aims to [state in 1-2 sentences what you are going to do].
 
-\subsection{[Relevant subtopic 1]}
+According to \citet{RN54}, this phenomenon has been well documented.
+Studies have shown multiple trends \citep{RN54}.
+
+% Example of citing
+% According to \cite{smith2020}, this phenomenon has been well documented.
+% This has been shown in multiple studies \citep{jones2019,brown2021}.
+
+% Example of including a figure
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pipeline.png}
+    \caption{\textbf{Title of figure.} A Description of what the figure shows, including any important details needed to understand it.}
+    \label{fig:pipeline-fig}
+\end{figure}
+
+Figure \ref{fig:pipeline-fig} is the proposed pipeline for the systematic computational screening.
+% Reference figures in text like this: As shown in Figure \ref{fig:example}...
+
+% Continue with more background sections as needed
+\subsection{Ribozymes and RNP Complexes}
+
+[Content here]
+Include background of main discoveries i.e. families of ribozymes
+
+\subsection{Current Methods for Ribozyme Discovery}
+
 [Content here]
 
-\subsection{Project Aims}
+\subsection{Evolution based Screens Yield Positive Results}
+
+[Content here]
+
+\subsection{Bioinformatic Approach}
+
+[Content here]
+
+% Project aims (should be about half a page)
+\section{Aims}
+
 The main aims of this project are:
+
 \begin{enumerate}
-    \item \textbf{Aim 1:} [Description]
-    \item \textbf{Aim 2:} [Description]
+    \item \textbf{Aim 1:} [Description of first aim - what you want to achieve, not how]
+    
+    \item \textbf{Aim 2:} [Description of second aim]
+    
+    \item \textbf{Aim 3:} [Description of third aim if applicable]
 \end{enumerate}
 
-% --- FIXED REFERENCE SECTION ---
+[Brief paragraph explaining how these aims relate to each other and the overall project goal]
+
+% Bibliography
 \newpage
-\bibliographystyle{apalike}
-\bibliography{references} % Your .bib file name here
+\bibliographystyle{apalike} % You can change this to other styles like 'plain', 'unsrt', 'nature', etc.
+\bibliography{references} % This refers to references.bib file
 
 \end{document}

@@ -1,0 +1,87 @@
+{
+    // Docker configuration for LaTeX
+    "latex-workshop.docker.enabled": true,
+    "latex-workshop.docker.image.latex": "my-tex-image",
+    
+    // For ARM64 (Apple Silicon) users - uncomment the line below
+    "latex-workshop.docker.platform": "linux/arm64",
+    
+    // For AMD64 (Intel) users - uncomment the line below
+    // "latex-workshop.docker.platform": "linux/amd64",
+
+    // Build recipes
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": ["latexmk"]
+        },
+        {
+            "name": "pdflatex",
+            "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+        }
+    ],
+
+    // LaTeX tools configuration
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-recorder",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": ["%DOCFILE%"]
+        }
+    ],
+
+    // Cleanup configuration
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        //"*.log",
+        "*.fdb_latexmk",
+        "*.synctex.gz"
+    ],
+    "latex-workshop.latex.autoClean.run": "onBuilt",
+    "latex-workshop.latex.clean.method": "glob",
+
+    // PDF viewer configuration
+    "latex-workshop.view.pdf.viewer": "tab",
+    
+    // Auto-build on save
+    "latex-workshop.latex.autoBuild.run": "onSave"
+}

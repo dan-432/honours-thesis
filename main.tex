@@ -1,0 +1,18 @@
+\documentclass{article}
+
+% Load the APA 7 style package
+\usepackage[style=apa, backend=biber]{biblatex}
+
+% Point to your .bib file
+\addbibresource{references.bib}
+
+\begin{document}
+
+\section{Testing APA 7}
+Here is a parenthetical citation \parencite{sample2024}. 
+You can also use a narrative citation where \textcite{sample2024} discuss the results.
+
+% Print the bibliography list
+\printbibliography
+
+\end{document}
