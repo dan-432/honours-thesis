@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass{article}
 
 % Packages
 \usepackage[utf8]{inputenc}
@@ -8,11 +8,22 @@
 \usepackage{setspace} % For line spacing
 \usepackage{graphicx} % For including figures
 \usepackage[labelfont=bf]{caption} % Bold figure labels
-\usepackage{natbib} % For bibliography management
+%\usepackage{natbib} % For bibliography management
 \usepackage{hyperref} % For hyperlinks
 \usepackage{titling} % For custom title page
 \usepackage{float} % For figure placement control
 \usepackage[font=small,labelfont=bf]{caption}
+\usepackage{tikz}
+\usepackage[mode=buildnew]{standalone} 
+\usepackage[style=apa, backend=biber]{biblatex}
+
+
+\addbibresource{references.bib}
+
+\usetikzlibrary{positioning, arrows.meta}
+
+% set spelling to UK English
+\usepackage[british]{babel}
 
 % Line spacing (1.5)
 \setstretch{1.5}
@@ -25,7 +36,7 @@
     urlcolor=blue
 }
 
-\setlength{\parindent}{0pt}
+%\setlength{\parindent}{0pt}
 
 \begin{document}
 
@@ -33,7 +44,7 @@
     \centering
     \vspace*{3cm}
     
-    {\Huge\bfseries An Evolution-Driven Computational Screening for RNA Motifs\par}
+    {\Huge\bfseries An Evolution-Driven Computational Screen for RNA Motifs\par}
     \vspace{2cm}
     
     {\Large Daniel Dachs\par}
@@ -55,65 +66,105 @@
 % Main content starts here
 \section{Introduction}
 
-\citet{RN54} has shown that this phenomenon is well documented.
-
-% Opening paragraph - state what you're introducing in 1-2 sentences at the end
-This introduction provides the background and rationale for [brief description of your project area]. [Additional context about the broader field or problem]. The proposed project aims to [state in 1-2 sentences what you are going to do].
-
-According to \citet{RN54}, this phenomenon has been well documented.
-Studies have shown multiple trends \citep{RN54}.
-
 % Example of citing
 % According to \cite{smith2020}, this phenomenon has been well documented.
 % This has been shown in multiple studies \citep{jones2019,brown2021}.
-
 % Example of including a figure
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/pipeline.png}
-    \caption{\textbf{Title of figure.} A Description of what the figure shows, including any important details needed to understand it.}
-    \label{fig:pipeline-fig}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{figures/pipeline.png}
+%     \caption{\textbf{Title of figure.} A Description of what the figure shows, including any important details needed to understand it.}
+%     \label{fig:pipeline-fig}
+% \end{figure}
 
-Figure \ref{fig:pipeline-fig} is the proposed pipeline for the systematic computational screening.
+% Figure \ref{fig:pipeline-fig} is the proposed pipeline for the systematic computational screening.
 % Reference figures in text like this: As shown in Figure \ref{fig:example}...
 
+\subsection{Ribonucleic Acids}
+
+Central dogma of molecular biology: DNA $\rightarrow$ RNA $\rightarrow$ Protein.
+
+In the hypothetical RNA world, RNA molecules are thought to have played a diverse set of roles in catalysis, regulation, and information storage.
+Although these tasks are primarily preformed by proteins and DNA in modern organisms, the RNA functions span beyond their roles as messengers.
+
+RNAs form a variety of secondary and teriary structures, (like hairpins, pseudoknots, and G-quadruplexes, which can be involved in their functional roles.)
+
+[maybe include figure of rna structures]
+
+STRUCTURE LEADS TO FUNCTION
+
 % Continue with more background sections as needed
-\subsection{Ribozymes and RNP Complexes}
+\subsection{Functional Ribonucleic Acids}
 
 [Content here]
-Include background of main discoveries i.e. families of ribozymes
+Include background of main discoveries i.e. families of ribozymes, riboswitches, etc.
 
-\subsection{Current Methods for Ribozyme Discovery}
+The diverse functional roles of RNA are driven by their structural and reactive diversity.
+Naturally occurring functional RNAs include riboswitches, and ribozymes, \emph{in vitro} selected RNAs include flourogens and aptazymes (ligand triggered) \parencite{Micura2020}.
+
+RNA is involved in some of the most important recent biotechnological advancements.
+CRISR-Cas9, lncRNAs, mRNA vaccines, RNAi, etc.
+
+RNAs involved in light, both as fluorescent aptamers and as photoreceptors \parencite{Micura2020}.
+[Cite Andrej Luptak, e.g. photoriboswitch Werewolf-1 developed by \textcite{Rotstan2020} using \emph{in vitro} selection, and the RNA aptamer Spinach, which binds to a flourogen and becomes fluorescent \parencite{Paige2011}]
+These are important for... Medical research, biotech, agriculture, etc.
+
+Many of these found in bacteria, but also in eukaryotes, and archaea.
+This project will focus on screening bacteria, but the methods could be applied to other domains of life.
+
+WHERE ARE FUNCTIONAL RNAs FOUND - in 5' UTRs, introns, intergenic regions, etc.
+Riboswithces are often found in 5' UTRs, and regulate gene expression by changing their structure in response to ligand binding \parencite{Kavita2023}.
+
+\subsection{Current Methods for Functional RNA Discovery}
+
+Experimental approaches...
+e.g. 
+
+Bioinformatic approaches have had some success in identifying novel naturally occurring functional RNAs.
+These approaches typically rely on sequence conservation, structural conservation, or a combination of both.
+e.g. CMFinder
+
+[Still very few found, so either they are very rare, or we are not looking in the right way.]
+
+\emph{In vitro} selection approaches have been used successfully to generate novel functional RNAs. 
+These approaches typically involve the generation of a large library of random RNA sequences, which are then subjected to a selection process that enriches for sequences with a desired function (cite someone)
+
+So why look for them naturally? - we would never have come up with the idea of CRISPR-Cas9, or mRNA vaccines, if we had only looked at \emph{in vitro} selected RNAs.
+Its worth looking for novel families, not just more of the same, as valuble as these sorts of screens are - yeilded things like flouride riboswitches
+
+\subsection{Evolution based Bioinformatic Screens Yield Novel Functional RNAs}
 
 [Content here]
+Zasha Wienburg's lab has had successes with their tool CMFinder, \textcite{Yao2006}, developed in 
+e.g. \textcite{Sack2025} recently identified 16 new structured RNA classes in plants using an evolution based bioinformatic screen.
+This study focused on structured RNAs involved in alternative splicing.
 
-\subsection{Evolution based Screens Yield Positive Results}
-
-[Content here]
-
-\subsection{Bioinformatic Approach}
-
-[Content here]
+Self cleaving riboswitches
 
 % Project aims (should be about half a page)
-\section{Aims}
+\subsection{Aims}
 
 The main aims of this project are:
 
 \begin{enumerate}
-    \item \textbf{Aim 1:} [Description of first aim - what you want to achieve, not how]
+    \item Compile a list of candidate RNA motifs with potential regulatory or functional roles.
+    \begin{itemize}
+        \item Multiple sequence alignments of 5' UTRs of mRNAs of specific gene families across multiple bacterial species.
+        \item Prediction of conserved RNA secondary structures in these alignments.
+    \end{itemize}
     
-    \item \textbf{Aim 2:} [Description of second aim]
-    
-    \item \textbf{Aim 3:} [Description of third aim if applicable]
+    \item Create a reusable computational pipeline to systematically screen for these motifs.
+
 \end{enumerate}
 
-[Brief paragraph explaining how these aims relate to each other and the overall project goal]
+\subsection{Hypothesis}
+Evolutionarily conserved motifs in 5' UTRs of mRNAs of specific gene families will yield structural regulatory motifs.
+
+\subsection{Significance}
+
 
 % Bibliography
 \newpage
-\bibliographystyle{apalike} % You can change this to other styles like 'plain', 'unsrt', 'nature', etc.
-\bibliography{references} % This refers to references.bib file
+\printbibliography
 
 \end{document}

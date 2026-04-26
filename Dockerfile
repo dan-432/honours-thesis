@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   biber \
   texlive-pictures \
   texlive-science \
+  texlive-bibtex-extra \
   latexmk \
   make \
   git \

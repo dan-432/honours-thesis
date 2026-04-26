@@ -3,9 +3,6 @@
     "latex-workshop.docker.enabled": true,
     "latex-workshop.docker.image.latex": "my-tex-image",
     
-    // For ARM64 (Apple Silicon) users - uncomment the line below
-    "latex-workshop.docker.platform": "linux/arm64",
-    
     // For AMD64 (Intel) users - uncomment the line below
     // "latex-workshop.docker.platform": "linux/amd64",
 
@@ -81,7 +78,9 @@
 
     // PDF viewer configuration
     "latex-workshop.view.pdf.viewer": "tab",
+
+    "ltex.language": "en-GB"
     
     // Auto-build on save
-    "latex-workshop.latex.autoBuild.run": "onSave"
+    //"latex-workshop.latex.autoBuild.run": "onSave"
 }
