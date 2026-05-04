@@ -70,6 +70,9 @@
         "*.ist",
         "*.fls",
         //"*.log",
+        "*.bcf",
+        "*.run.xml",
+        "*-blx.bib",
         "*.fdb_latexmk",
         "*.synctex.gz"
     ],
@@ -79,8 +82,8 @@
     // PDF viewer configuration
     "latex-workshop.view.pdf.viewer": "tab",
 
-    "ltex.language": "en-GB"
+    "ltex.language": "en-GB",
     
     // Auto-build on save
-    //"latex-workshop.latex.autoBuild.run": "onSave"
+    "latex-workshop.latex.autoBuild.run": "never"
 }
