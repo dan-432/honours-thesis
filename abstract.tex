@@ -1,0 +1,13 @@
+This is my abstract from my talk, should be updated for the dissertation:
+
+RNA underpins many of the most transformative advances in modern biotechnology, including RNA interference, CRISPR systems, metabolite-sensing riboswitches, and recently discovered bridge RNA-guided recombination systems. 
+Despite their importance, discovering new functional RNAs remains challenging. 
+Unlike proteins, RNA sequences often evolve rapidly and are conserved primarily through structure rather than sequence, limiting the effectiveness of conventional homology-search methods. 
+Protein homology detection in contrast is an easier solved problem with robust and fast implementations.
+
+Here, we present a protein-first RNA discovery framework that leverages conserved bacterial protein domains to identify candidate cis-regulatory RNAs within neighbouring non-coding regions. 
+Minimum free energy folding is unreliable for single sequences and machine learning structure prediction, like AlphaFold, struggle with the small alphabet and the limited training data available. 
+Rather than relying solely on structure prediction, we use comparative genomics and identify covarying sites, which mutate together across evolution to preserve base pairing, as evidence of real structure. 
+As an initial application, we focus on light-associated protein systems to search for novel light-responsive RNA regulators - looking for potential RNA light switches. 
+We further introduce an approach for measuring relatedness between RNA elements, filling a gap in this area. 
+Together, this framework provides a targeted and scalable route to RNA discovery, allowing biological pathways of interest to be rapidly screened for previously uncharacterized functional RNA elements.

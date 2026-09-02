@@ -68,7 +68,7 @@
         "*.glo",
         "*.gls",
         "*.ist",
-        "*.fls",
+        //"*.fls",
         //"*.log",
         "*.bcf",
         "*.run.xml",

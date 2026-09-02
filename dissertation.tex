@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This is a document template for an Otago thesis (Masters or PhD).
+%% A skeleton chapter layout is also suggested.
+%%
+%% Look in the directory example_document for filled-out chapters
+%% that show you how to do figures, bibliographies, and tables.
+%%
+%% Since this was written for Computer Science at Otago University,
+%% Harvard (author, date) style citations are used.  Other students
+%% should consult their advisors as to what style of citations to use.  
+%%
+%% Daniel Dachs 2026
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pdfminorversion=7
+
+%%
+%% In the style of a technical report, in 12pt and one sided.
+%% Start chapters on right hand side pages only.
+%%
+\documentclass[12pt]{report}    
+%%\documentclass[12pt,twoside,openright]{report} %% Use this for twosided.
+
+%%
+%% Load packages.
+%%
+\usepackage[bschons]{otagothesis}     %% Use Otago page layout
+
+\usepackage[longnamesfirst,round]{natbib} %% Use Natural Sciences bibliography
+
+%%\usepackage{times}              %% Times PostScript font. Don't use
+				  %% if thesis contains lots of math.
+
+\usepackage{graphicx}             %% jpg, gif, tiff, and pdf graphics
+\usepackage{moreverb}             %% Verbatim Code Listings
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times} % Times New Roman font
+% \usepackage[margin=3cm,left=3.5cm]{geometry} % Set margins
+%\usepackage{natbib} % For bibliography management
+\usepackage{hyperref} % For hyperlinks
+% \usepackage{titling} % For custom title page
+\usepackage{float} % For figure placement control
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{tikz}
+\usepackage[mode=image]{standalone} 
+\usepackage[printonlyused,withpage]{acronym}
+% \usepackage[style=apa, backend=biber]{biblatex}
+
+
+% \addbibresource{references.bib}
+
+\usetikzlibrary{positioning, arrows.meta}
+
+% set spelling to UK English
+\usepackage[british]{babel}
+
+% Customize hyperref colors
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue
+}
+
+\newcommand{\listofabbreviations}{%
+  \chapter*{Abbreviations}
+  \addcontentsline{toc}{chapter}{Abbreviations}
+  \begin{acronym}[DMS-MaPseq]  %% widest abbreviation you use, for column alignment
+    \acro{DAG}{Directed Acyclic Graph}
+    \acro{MSA}{Multiple Sequence Alignment}
+    \acro{HMM}{Hidden Markov Model}
+    \acro{CM}{Covariance Model}
+    \acro{GTDB}{Genome Taxonomy Database}
+    \acro{BLAST}{Basic Local Alignment Search Tool}
+    \acro{COVID-19}{Coronavirus Disease 2019}
+    \acro{CRISPR}{Clustered Regularly Interspaced Short Palindromic Repeats}
+    \acro{crRNA}{CRISPR RNA}
+    \acro{DMS-MaPseq}{Dimethyl Sulfate Mutational Profiling with Sequencing}
+    \acro{HDV}{Hepatitis Delta Virus}
+    \acro{mRNA}{Messenger RNA}
+    \acro{RNAi}{RNA Interference}
+    \acro{RNP}{Ribonucleoprotein}
+    \acro{rRNA}{Ribosomal RNA}
+    \acro{SELEX}{Systematic Evolution of Ligands by Exponential Enrichment}
+    \acro{SHAPE-seq}{Selective 2'-Hydroxyl Acylation analysed by Primer Extension Sequencing}
+    \acro{sRNA}{Small Regulatory RNA}
+  \end{acronym}
+}
+
+%\setlength{\parindent}{0pt}
+
+%%
+%% Set title, author and date.
+%%
+\title{A Protein First Computational Screen for RNA Motifs}
+\author{Daniel Dachs}
+\date{October 2026}
+
+%%
+%% The library want to know all sorts of personal stuff!
+%% Can be left out if you don't use the \frontstuff command
+%%
+\fullname{Daniel Dachs}
+\department{Department of Biochemistry}
+\dob{1 January 1900} %% date-of-birth
+\address{710 Cumberland St, Dunedin, NZ}
+
+%%
+%% Uncomment to just print up a few chapters.
+%%
+%%\includeonly{literature,conclusion}
+
+%%
+%% Go!
+%%
+\begin{document}
+
+%%
+%% Put in titlepage and contents, etc...
+%%
+\typeout{>>> DEBUG: about to run frontstuff <<<}
+\frontstuff
+
+%%
+%% Set to one-and-a-half line-spacing
+%%
+\linespread{1.5} \normalsize
+
+%%
+%% Include each chapter as a separate file.
+%% These lines assume there are files called intro.tex, literature.tex etc.
+%%
+
+
+\include{introduction}
+
+\include{methods}
+
+\include{results}
+
+\include{discussion}
+
+
+
+
+\cleardoublepage
+\bibliographystyle{cell}
+\bibliography{references}
+
+\include{appendices}
+
+\end{document}
+%% All Done!

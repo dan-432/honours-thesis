@@ -114,6 +114,8 @@ CRISPR--Cas systems exemplify the diversity and complexity of bacterial RNPs.
 CRISPR RNAs (crRNAs) guide Cas nucleases to complementary DNA or RNA targets, enabling sequence-specific nucleic acid cleavage \parencite{Barrangou2007}.
 This mechanism has famously been repurposed as a gene-editing tool \parencite{Jinek2012}.
 
+Bridge RNAs ... [super important to introduce]
+
 \subsubsection*{Ribozymes}
 
 Ribozymes are catalytic RNAs that accelerate chemical reactions, much like protein enzymes.
@@ -144,11 +146,13 @@ These RNAs, involved in fluorescence and photoreception, have broad relevance fo
 
 \subsection{Current Approaches to Functional RNA Discovery}
 
+% Don't focus so much on riboswitches, we are more focused on RNA:protien complexes
 It is predicted that a large number of riboswitches remain undiscovered, potentially on the order of thousands \parencite{Kavita2023}.
 Ronald Breaker and colleagues have pioneered systematic riboswitch and ribozyme discovery, identifying over 55 distinct riboswitch classes to date \parencite{Breaker2022}.
 Other major RNA-related discoveries, such as ribosomes and CRISPR--Cas systems, occurred through more exploratory research approaches \parencite{Brück2025}.
 
 \subsubsection*{Experimental Approaches}
+% this section could be shortened or removed, kind of an aside to the main focus of the project
 
 Transcriptome mapping approaches have proven successful for unbiased riboswitch discovery.
 Term-seq maps RNA 3$'$ termini genome-wide to identify premature transcription termination sites characteristic of riboswitches and attenuators \parencite{Dar2016}.
@@ -163,6 +167,7 @@ A range of complementary methods also exist for studying protein--RNA interactio
 While these experimental approaches are powerful for validation and mechanistic characterization, they are labour-intensive, may miss RNAs with unknown functions, and are difficult to scale across large numbers of organisms.
 
 \subsubsection*{\emph{In Vitro} Selection and Computational Design}
+% same here honestly, again a bit of an aside, but relavent perhaps to explaining the significance of the project
 
 \emph{In vitro} selection methods, such as SELEX, generate novel functional RNAs by applying selective pressure to large libraries of random sequences.
 This technique was used in the generation of the photoriboswitch Werewolf-1 \parencite{Rotstan2020}.
@@ -172,6 +177,7 @@ However, many major RNA discoveries—including CRISPR--Cas systems, mRNA vaccin
 Beyond biotechnology, the discovery of natural RNA-based regulatory systems provides important biological insights, as illustrated by the identification of fluoride-sensing riboswitches in bacteria \parencite{Breaker2012}.
 
 \subsubsection*{Computational Approaches}
+% this probably needs to be a larger focus of the introduction, as it is the main focus of the project
 
 Bioinformatic sequence-based searches using tools such as BLAST can identify homologous sequences, but many functional RNAs exhibit limited sequence conservation and are detectable only through structural conservation.
 Structure-based searches have proven particularly successful; for example, a bioinformatic screen by \textcite{Roth2014} identified approximately 2,700 twister ribozymes.
@@ -192,6 +198,7 @@ In that study, hammerhead and twister ribozymes were frequently observed near on
 \textcite{Weinberg2015} followed up on this observation by screening genomic regions near known ribozymes and ribozyme-associated protein domains, leading to the discovery of additional ribozyme classes, including pistol and hatchet.
 
 \subsection{Gene Family-Targeted Searches}
+% introcuce this more as a protein first approach rather than gene family
 
 Beyond genome-wide screens, gene family-targeted searches have proven effective for the discovery of riboswitches and other functional RNAs \parencite{Micura2020, Kavita2023}.
 Many riboswitches are encoded upstream of specific gene families, reflecting shared regulatory mechanisms.
@@ -236,7 +243,7 @@ The specific aims are:
 \end{enumerate}
 
 \subsection{Hypothesis}
-
+% this is a terrinble hypothesis, needs to be rewritten and testable.
 Evolutionarily conserved structural motifs within transcripts associated with specific gene families represent functional regulatory elements maintained by natural selection.
 These elements may employ diverse mechanisms, including ligand-dependent structural switching (riboswitches), catalytic self-cleavage (ribozymes), protein binding, or other structure-based regulatory strategies, to control gene expression.
 
