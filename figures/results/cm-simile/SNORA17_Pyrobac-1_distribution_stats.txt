@@ -1,0 +1,10 @@
+model_a=SNORA17
+model_b=Pyrobac-1
+ks_b_on_a_vs_null_d=0.262541
+ks_b_on_a_vs_null_p=5.25696e-07
+ks_a_on_b_vs_null_d=0.112037
+ks_a_on_b_vs_null_p=0.111762
+ks_b_on_a_vs_self_d=1
+ks_b_on_a_vs_self_p=2.76779e-87
+ks_a_on_b_vs_self_d=0.995
+ks_a_on_b_vs_self_p=2.03494e-86

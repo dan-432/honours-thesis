@@ -1,0 +1,20 @@
+\begin{table}[H]
+\centering
+\caption[Filtering thresholds used in the computational discovery pipeline]{Filtering thresholds used in the computational discovery pipeline.}
+\label{tab:thresholds}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Step & Parameter & Value \\
+\midrule
+3.1 Domain search & hmmsearch E-value & $\leq 10^{-5}$ \\
+3.2 Flanking extraction & Minimum length & 20\,nt \\
+ & Overlap into coding sequence & 5\,nt \\
+3.3 Clustering & mmseqs2 minimum sequence identity & 0.4 \\
+ & Coverage (mode 3) & $\geq 0.5$ \\
+ & Minimum cluster size & 5 \\
+ & Trimming padding & 15\,nt \\
+3.5 Covariance analysis & R-scape E-value (at least one covarying pair) & $\leq 0.05$ \\
+3.6 Calibration & Random sequence length & $0.8$ megabases \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,50 @@
+\documentclass[tikz, border=8pt]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc, fit}
+\input{dag_common.tex}
+
+\begin{document}
+\begin{tikzpicture}[
+    section/.style={rectangle, rounded corners=3pt, draw=black, thick,
+        minimum height=1.6cm, text width=5.6cm, align=center, inner sep=5pt},
+]
+
+\node[res] (dbs) at (0,0) {Public databases\\\texttt{InterPro} \quad \texttt{Pfam} \quad \texttt{GTDB} \quad \texttt{Rfam}};
+
+\node[section, fill=catDefine!35, below=1.3cm of dbs] (curation)
+    {\textbf{1. Database Curation}\\\footnotesize reference genomes, genome retrieval, Rfam models, protein domain profiles};
+
+\node[section, fill=catValidate!35, below left=2.6cm and -0.6cm of curation] (posctrl)
+    {\textbf{2. Positive Control Preparation}\\\footnotesize known RNA motif $\rightarrow$ recovered protein signal};
+
+\node[section, fill=catLocalize!35, below right=2.6cm and -0.6cm of curation] (discovery)
+    {\textbf{3. Computational Discovery Pipeline}\\\footnotesize protein domain $\rightarrow$ candidate RNA motif};
+
+\draw[->] (dbs) -- (curation);
+\draw[->] (curation.south) -- ++(0,-1.2cm) -| (posctrl.north);
+\draw[->] (curation.south) -- ++(0,-1.2cm) -| (discovery.north);
+\node[sublbl, text width=3.2cm, align=center] at ($(curation.south)+(-2.5,-0.6cm)$) {Rfam model\\+ genome set};
+\node[sublbl, text width=3.2cm, align=center] at ($(curation.south)+(2.5,-0.6cm)$) {protein domain profile\\+ genome set};
+
+\draw[->, dashed] (posctrl.east) to[out=0, in=180]
+    node[midway, above, sublbl, text width=3.6cm, align=center]
+    {recovered protein HMM\\(validation route)} ($(discovery.west)+(-0.05,0.35)$);
+
+\node[sublbl, above right=0.3cm and -2.6cm of discovery, text width=3.0cm, align=left]
+    {protein input from \S1 (curated) \emph{or} \S2 (recovered HMM)};
+
+\node[section, fill=catModel!30, below=1.5cm of discovery] (iterexp)
+    {\textbf{4. Iterative Expansion}\\\footnotesize re-run discovery seeded with the newly built covariance models to recover more divergent homologs};
+
+\node[section, fill=catCluster!30, below=1.5cm of iterexp] (cmcluster)
+    {\textbf{5. Covariance Model Clustering}\\\footnotesize group related CMs across iterations (cmsimile: KS / Mann-Whitney U comparison)};
+
+\draw[->] (discovery) -- (iterexp) node[midway, right, sublbl, text width=2.6cm] {from \S3.6};
+\draw[->] (iterexp) -- (cmcluster);
+
+\node[draw=black, dashed, rounded corners=3pt, inner sep=0.4cm,
+      fit=(iterexp)(cmcluster),
+      label={[font=\bfseries\itshape, anchor=south west, xshift=-0.15cm, yshift=0.1cm]north west:Preliminary}] {};
+
+\end{tikzpicture}
+\end{document}

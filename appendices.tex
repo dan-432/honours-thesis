@@ -1,7 +1,168 @@
 \chapter{Appendices}
 
-Here's my code ...
+\section{Code and Data Availability}
+\label{sec:code-and-data-availability}
 
-\url{https://github.com/dan-432/DarwinsRNAHunt}
+Code is available from:
 
-and \url{https://github.com/dan-432/cm-simile}
+\begin{itemize}
+    \item \url{https://github.com/dan-432/DarwinsRNAHunt} contains the positive control and discovery snakemake pipelines and associated analyses.
+    \item \url{https://github.com/dan-432/cm-iterative-expansion} contains the logic for and analysis of the itertive expansion of candidate \ac{CM}s.
+    \item \url{https://github.com/dan-432/cm-simile} contains the logic for and analysis of the pairwise similarity scoring of candidate \ac{CM}s
+\end{itemize}
+
+See top-level README files for further documentation on file structure and running instructions.
+
+Data and computed results are available from \dots
+
+[link to zenodo]
+
+\section{Supplimentary Tables}
+
+\input{tables/positive-control-pipeline-inputs.tex}
+
+\input{tables/discovery-filtering.tex}
+
+\input{tables/discovery-pipeline-inputs.tex}
+
+\input{tables/proteinclusters-full.tex}
+
+\input{tables/rscape-iterative-expansion-table.tex}
+
+\input{tables/alphafoldinputs.tex}
+
+\input{tables/flagellin-hits.tex}
+
+\section{Supplimentary Figures}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/methods/tradeoff.pdf}
+    \caption[Clustering parameter selection for positive control pipeline]{\textbf{Clustering parameter selection for positive control pipeline.}
+    The clustering step of the positive control pipeline was run with a range of parameters, and the number of clusters and singleton-genome clusters were recorded.}
+    \label{fig:poscontrol-clustering}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/results/iTOL-gtdbtree-RF00050-clusterannotated.pdf}
+  \caption[Prevalence of homologous protein sequences neighbouring \ac{FMN} riboswitch]{\textbf{Prevalence of homologous protein sequences neighbouring \ac{FMN} riboswitch.}
+  Top 10 clusters by presence per genome are shown around tree, in order of Appendix Table \ref{tab:cluster_appendix}.
+  Tree is annotated with analysis output of the positive control preperation pipeline output.
+  It shows the \ac{GTDB} species taxonomy of representative genomes containing the \ac{FMN} riboswitch (as annotated by Rfam).}
+  \label{fig:fmn-itol-tree}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/results/crisprrepeatelementtree.pdf}
+  \caption[Prevalence of homologous protein sequences neighbouring \ac{CRISPR}-Direct Repeat 42]{\textbf{Prevalence of homologous protein sequences neighbouring \ac{CRISPR}-Direct Repeat 42.}
+  Top 10 clusters by presence per genome are shown around tree, in order of Appendix Table \ref{tab:cluster_appendix}.
+  Tree is annotated with analysis output of the positive control preperation pipeline output.
+  It shows the \ac{GTDB} species taxonomy of representative genomes containing \ac{CRISPR}-Direct Repeat 42 (as annotated by Rfam).}
+  \label{fig:cdr-itol-tree}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_416_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 416 (F = 78.95)}
+        \label{fig:cand416-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_647_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 647 (F = 73.17)}
+        \label{fig:cand647-struct}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_35_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 35 (F = 62.07)}
+        \label{fig:cand35-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_491_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 491 (F = 60.67)}
+        \label{fig:cand491-struct}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_40_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 40 (F = 56.67)}
+        \label{fig:cand40-struct}
+    \end{subfigure}
+
+    \caption[Predicted covarying secondary structures of remaining FMN candidates, part 1]{\textbf{Predicted covarying secondary structures of remaining FMN riboswitch candidates (part 1 of 2).} R-scape CaCoFold structures generated from iteratively expanded alignments, ordered by F-score.}
+    \label{fig:drh-appendix-structures-1}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_384_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 384 (F = 55.70)}
+        \label{fig:cand384-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_396_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 396 (F = 34.04)}
+        \label{fig:cand396-struct}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_109_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 109 (F = 32.26)}
+        \label{fig:cand109-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_442_alignment_03_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 442 (F = 20.00)}
+        \label{fig:cand442-struct}
+    \end{subfigure}
+
+    \caption[Predicted covarying secondary structures of remaining FMN candidates, part 2]{\textbf{Predicted covarying secondary structures of remaining FMN riboswitch candidates (part 2 of 2).} R-scape CaCoFold structures generated from iteratively expanded alignments, ordered by F-score. \ref{fig:cand396-struct} and \ref{fig:cand109-struct} correspond to the two low-identity outlier clusters discussed in the results text.}
+    \label{fig:drh-appendix-structures-2}
+\end{figure}
+\clearpage
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cm-simile/similarity_ratio_boxplot.pdf}
+        \caption{Similarity ratio (minmax)}
+        \label{fig:similarity-ratio-boxplot}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cm-simile/bitscoresumdifference_boxplot.pdf}
+        \caption{Bitscore median vs.\ null}
+        \label{fig:bitscore-boxplot}
+    \end{subfigure}
+    \caption[Within- vs.\ between-clan separation for early classification approaches]{\textbf{Within- vs.\ between-clan separation for the two initial classification approaches.} 
+    \textbf{(a)}: shows pairwise similarity ratio scores, motivated by common-ancestor theory but lacking a statistical null. 
+    \textbf{(b)}: shows median bitscore compared against a dinucleotide-shuffled bootstrap null distribution. 
+    Within-clan (\emph{n}~=~27) and other (\emph{n}~=~919) pairs are drawn from annotated Rfam entries.}
+    \label{fig:early-classifiers}
+\end{figure}

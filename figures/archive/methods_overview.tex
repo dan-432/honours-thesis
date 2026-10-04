@@ -1,0 +1,143 @@
+\documentclass[tikz, border=8pt]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit, backgrounds, calc}
+
+% - palette (ColorBrewer Set3-style, colour-coded by operation type) -
+\definecolor{catDefine}{HTML}{8DD3C7}
+\definecolor{catSelect}{HTML}{B3DE69}
+\definecolor{catAcquire}{HTML}{D9D9D9}
+\definecolor{catLocalize}{HTML}{FDB462}
+\definecolor{catExtract}{HTML}{FFFFB3}
+\definecolor{catCombine}{HTML}{FCCDE5}
+\definecolor{catCluster}{HTML}{BC80BD}
+\definecolor{catTrim}{HTML}{BEBADA}
+\definecolor{catModel}{HTML}{FB8072}
+\definecolor{catValidate}{HTML}{80B1D3}
+\definecolor{catReport}{HTML}{FFED6F}
+
+% \definecolor{catDefine}{HTML}{ffffff}
+% \definecolor{catSelect}{HTML}{ffffff}
+% \definecolor{catAcquire}{HTML}{ffffff}
+% \definecolor{catLocalize}{HTML}{ffffff}
+% \definecolor{catExtract}{HTML}{ffffff}
+% \definecolor{catCombine}{HTML}{ffffff}
+% \definecolor{catCluster}{HTML}{ffffff}
+% \definecolor{catTrim}{HTML}{ffffff}
+% \definecolor{catModel}{HTML}{ffffff}
+% \definecolor{catValidate}{HTML}{ffffff}
+% \definecolor{catReport}{HTML}{ffffff}
+
+\definecolor{keaGreen}{HTML}{6c803a}
+\definecolor{darkBrown}{HTML}{7B5C34}
+\definecolor{lightBrown}{HTML}{AB7C47}
+\definecolor{keaYellow}{HTML}{CCAE42}
+\definecolor{keaOrange}{HTML}{D73202}
+\definecolor{charcoal}{HTML}{272318}
+\definecolor{lightGrey}{HTML}{D3CDBF}
+\definecolor{white}{HTML}{ffffff}
+
+
+\begin{document}
+\begin{tikzpicture}[
+    font=\fontsize{7}{8}\selectfont,
+    >={Latex[length=2mm,width=1.4mm]},
+    every path/.style={thick},
+    stage/.style={rectangle, rounded corners=2pt, draw=black, thin,
+        minimum height=1.05cm, text width=3.55cm, align=center, inner sep=3pt},
+    ckpt/.style={dashed, line width=0.9pt},
+    ext/.style={rectangle, rounded corners=2pt, draw=black!55, dash pattern=on 2.2pt off 1.6pt,
+        thin, minimum height=0.85cm, text width=3.1cm, align=center, fill=white,
+        font=\fontsize{6.3}{7.3}\selectfont, inner sep=2.5pt},
+    res/.style={rectangle, rounded corners=2pt, draw=black, thin, fill=white,
+        minimum height=1cm, text width=4.6cm, align=center, inner sep=3pt},
+    lbl/.style={font=\fontsize{8.5}{9.5}\bfseries\selectfont},
+    node distance=0.55cm and 2.6cm
+]
+
+% =========================================================
+% Shared upstream resources
+% =========================================================
+\node[res, fill=catDefine!35]  (rInterpro) at (0,0)   {InterPro entry:\\target domain profile \& taxonomic scope};
+\node[res, fill=catAcquire!55] (rGTDB)     at (5.6,0) {GTDB bac120 reference tree \\ \& genome metadata};
+\node[res, fill=catValidate!35] (rRfam)    at (11.2,0) {Rfam release:\\\texttt{Rfam.cm} models + \texttt{Rfam.full\_region} index};
+
+% =========================================================
+% PANEL A  Discovery: protein anchor -> candidate RNA motif
+% =========================================================
+\node[stage, fill=catDefine!70,   below=2.0cm of rInterpro, xshift=2.8cm] (A1)  {Define target domain \& clade \\ \texttt{download\_interpro\_taxonomy}};
+\node[lbl, above=0.25cm of A1, text width=4.6cm, align=center, font=\fontsize{8}{9}\bfseries\selectfont] (hdrA) {Discovery\\(protein $\rightarrow$ candidate RNA motif)};
+\node[stage, fill=catSelect!70,   below=of A1] (A2)  {Select clade genomes from GTDB (completeness/contamination filter) \\ \texttt{select\_genomes}};
+\node[stage, fill=catAcquire!85,  below=of A2, ckpt] (A3)  {Download assemblies: genome, GFF3, proteome \\ \texttt{download\_genomes} [checkpoint]};
+\node[stage, fill=catLocalize!70, below=of A3] (A4)  {Locate domain in proteomes  hmmsearch \\ \texttt{locate\_domains}};
+\node[ext, left=1.4cm of A4] (SA) {Target-domain profile HMM (external, pre-built)};
+\node[stage, fill=catExtract!85,  below=of A4] (A5)  {Extract flanking 5'/CDS/3' intervals per genome \\ \texttt{extract\_flanking\_sequences}};
+\node[stage, fill=catCombine!70,  below=of A5] (A6)  {Combine across genomes \& filter by length/GC \\ \texttt{combine\_flanking\_sequences} \\ \texttt{filter\_flanking\_sequences}};
+\node[stage, fill=catCluster!55,  below=of A6, ckpt] (A7)  {Cluster flanking sequences  mmseqs2 search + clust \\ \texttt{cluster\_flanking\_regions} [checkpoint]};
+\node[stage, fill=catTrim!70,     below=of A7] (A8)  {Trim each cluster to its core homologous window \\ \texttt{trim\_cluster\_to\_core\_window}};
+\node[stage, fill=catModel!65,    below=of A8] (A9)  {Align cluster (MAFFT) \& convert to Stockholm \\ \texttt{mafft\_align\_motif\_cand}, \texttt{build\_stockholm}};
+\node[stage, fill=catValidate!55, below=of A9] (A10) {Test conserved secondary structure  R-scape/CaCoFold \\ \texttt{find\_structure}};
+\node[stage, fill=catModel!65,    below=of A10] (A11) {Build \& calibrate covariance model \\ \texttt{build\_cm\_from\_msa}, \texttt{calibrate\_cm\_model}};
+\node[stage, fill=catReport!75,   below=of A11] (A12) {Final report: ranked candidate motifs + combined CM library \\ \texttt{build\_final\_report}};
+
+\draw[->] (rInterpro.south) -- ++(0,-1.65cm) -| (A1.north);
+\draw[->] (rGTDB) |- (A2);
+\draw[->] (A1)--(A2)--(A3)--(A4)--(A5)--(A6)--(A7)--(A8)--(A9)--(A10)--(A11)--(A12);
+\draw[->] (SA) -- (A4);
+\draw[->] (rInterpro) -- ++ (0,-7cm) -| (SA);
+
+% =========================================================
+% PANEL B  Positive control: known RNA motif -> recovered protein signal
+% =========================================================
+\node[stage, fill=catDefine!70,   below=2.0cm of rRfam, xshift=-2.8cm] (B1)  {Identify genomes carrying the family \\ \texttt{get\_accession\_ids} [checkpoint]};
+\node[lbl, above=0.25cm of B1, text width=4.6cm, align=center, font=\fontsize{8}{9}\bfseries\selectfont] (hdrB) {Positive control\\(known RNA motif $\rightarrow$ recovered protein signal)};
+\node[stage, fill=catSelect!70,   below=of B1] (B2)  {Select matching genomes from GTDB (completeness/contamination filter) \\ \texttt{select\_control\_genomes}};
+\node[stage, fill=catAcquire!85,  below=of B2, ckpt] (B3)  {Download assemblies: genome, GFF3, proteome \\ \texttt{download\_rfam\_motif\_genomes} [checkpoint]};
+\node[stage, fill=catLocalize!70, below=of B3] (B4)  {Locate known motif  cmsearch \\ \texttt{find\_motif}};
+\node[ext, right=1.4cm of B4] (SB) {Family covariance model (\texttt{extract\_rfam\_cm}) \& cmsearch threshold (\texttt{extract\_rfam\_threshold})};
+\node[stage, fill=catExtract!85,  below=of B4] (B5)  {Extract flanking coding sequences around each hit \\ \texttt{find\_flanking\_cds}};
+\node[stage, fill=catCombine!70,  below=of B5] (B6)  {Combine flanking CDS across genomes \\ \texttt{combine\_flanking\_cds}};
+\node[stage, fill=catCluster!55,  below=of B6, ckpt] (B7)  {Cluster flanking proteins  mmseqs2 \\ \texttt{cluster\_flanking\_cds} [checkpoint]};
+\node[stage, fill=catModel!65,    below=of B7] (B8)  {Align clusters; build \& calibrate HMM profiles \\ \texttt{mafft\_align}, \texttt{hmmer\_build} \\ \texttt{hmmcalibrate}};
+\node[stage, fill=catValidate!55, below=of B8] (B9)  {Presence/absence \& spread analysis across clusters \\ \texttt{cluster\_spread\_analysis}};
+\node[ext, right=1.4cm of B9] (TL) {Interactive Tree of Life (iToL) analysis};
+\node[stage, fill=catValidate!55, below=of B9] (B10) {Test phylogenetic association  Fitch/Dollo, monophyly \\ \texttt{analyse\_cluster\_phylogeny}};
+\node[stage, fill=catReport!75,   below=of B10] (B11) {Aggregate summary across all control families \\ \texttt{get\_family\_clustering}};
+
+\draw[->] (rRfam.south) -- ++(0,-1.65cm) -| (B1.north);
+\draw[->] (rGTDB) |- (B2);
+\draw[->] (B1)--(B2)--(B3)--(B4)--(B5)--(B6)--(B7)--(B8)--(B9)--(B10)--(B11);
+\draw[->] (SB) -- (B4);
+\draw[->] (rRfam) -- ++ (0,-7cm) -| (SB.north);
+\draw[->] (B9) -- (TL);
+
+\draw[->] (B11.south) -- ++ (0, -1cm) -| ++ (0, +1cm) (A1.north);
+
+% =========================================================
+% Legend
+% =========================================================
+\coordinate (legAnchor) at ($(A12.south)+(-6,-1.1cm)$);
+\begin{scope}[shift={(legAnchor)}, swatch/.style={rectangle, draw=black, thin, fill=#1, minimum width=0.35cm, minimum height=0.35cm, anchor=west}, legtxt/.style={anchor=west, font=\fontsize{6.5}{7.5}\selectfont, text width=3.7cm}]
+\node[lbl, anchor=west] at (0,0.55) {Legend};
+% row 0
+\node[swatch=catDefine!70]  at (0.0cm, 0)   {}; \node[legtxt] at (0.45cm, 0)   {Define target \& scope};
+\node[swatch=catSelect!70]  at (4.6cm, 0)   {}; \node[legtxt] at (5.05cm, 0)   {Genome selection (GTDB)};
+\node[swatch=catAcquire!85] at (9.2cm, 0)   {}; \node[legtxt] at (9.65cm, 0)   {Genome acquisition};
+\node[swatch=catLocalize!70] at (13.8cm, 0) {}; \node[legtxt] at (14.25cm, 0) {Feature localisation};
+% row 1
+\node[swatch=catExtract!85] at (0.0cm, -0.7cm)  {}; \node[legtxt] at (0.45cm, -0.7cm)  {Flanking extraction};
+\node[swatch=catCombine!70] at (4.6cm, -0.7cm)  {}; \node[legtxt] at (5.05cm, -0.7cm)  {Combine \& filter};
+\node[swatch=catCluster!55] at (9.2cm, -0.7cm)  {}; \node[legtxt] at (9.65cm, -0.7cm)  {Clustering (mmseqs2)};
+\node[swatch=catTrim!70]    at (13.8cm, -0.7cm) {}; \node[legtxt] at (14.25cm, -0.7cm) {Window trimming (Panel A only)};
+% row 2
+\node[swatch=catModel!65]    at (0.0cm, -1.4cm) {}; \node[legtxt] at (0.45cm, -1.4cm) {Alignment / model building};
+\node[swatch=catValidate!55] at (4.6cm, -1.4cm) {}; \node[legtxt] at (5.05cm, -1.4cm) {Structural or phylogenetic test};
+\node[swatch=catReport!75]   at (9.2cm, -1.4cm) {}; \node[legtxt] at (9.65cm, -1.4cm) {Reporting / aggregation};
+% row 3 -- structural conventions
+\node[rectangle, draw=black!55, dash pattern=on 2.2pt off 1.6pt, thin, fill=white, minimum width=0.35cm, minimum height=0.35cm, anchor=west] at (0.0cm, -2.1cm) {};
+\node[legtxt] at (0.45cm, -2.1cm) {External / static input file};
+\node[rectangle, draw=black, ckpt, fill=white, minimum width=0.35cm, minimum height=0.35cm, anchor=west] at (4.6cm, -2.1cm) {};
+\node[legtxt, text width=5cm] at (5.05cm, -2.1cm) {Snakemake checkpoint (dynamic re-evaluation)};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}

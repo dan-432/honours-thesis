@@ -1,11 +1,84 @@
 \chapter{Discussion}
 
-\section{Finding A}
+\section{Discovery pipeline}
 
-\section{Finding B}
+\subsection{Postive control set}
+
+\ac{FMN} riboswitch chosen for its clear biological association with a protein and relative conservation across a wide set of bacterial species.
+
+\ac{CRISPR} one too
+
+\subsection{Negative control set}
+
+There are many dificulties in the curation of a negative control set for a discovery pipeline stemming from the difficulty of proving a negative.
+
+What it showed
+
+\subsection{Iterative expansion approach}
+
+\subsection{Searching with \ac{BLUF}}
+
+\ac{BLUF} was chosen as a proof-of-concept search target for its potential to be involved in an \ac{RNP} 'light switch' complex.
+
+\section{Covariance model clustering appraoch}
+
+\subsection{Why} % I need to come up with a better heading
+
+There is a hole in bioinformatic tools for a fast, working, reliable and statistically defensible similarity scoring.
+C
+
+\subsection{Applications}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/discussion/cluster-merging.pdf}
+    \caption[Covariance model clustering and merging]{\textbf{Covariance model clustering and merging.} 
+    Shown in red, gold and blue are structured RNA elements that have been identified by local alignment.
+    Identified elements are homologous to eachother, but are not similar enough to be detected by classical homology search methods.
+    Covariance models describing these elements can be clustered based on their similarity, and merged to create a new model that captures the shared features of the original models. 
+    This approach can be used to identify more distant homologs and improve the sensitivity of RNA discovery pipelines.}
+    \label{fig:cluster-merging}
+\end{figure}
 
 \section{Limitations}
 
-\section{Future Directions}
+Currently looking over flanking regions which include coding regions of opposite strand - will be picking up on coding level conservation here
 
-\section{Conclusion}
+Limited to just up and down stream of same strand, as we saw with the CRISPR-DR42 conserved associations can go beyond this limited relationship
+
+Relying on unreliable annotations
+
+Should have used McGimpsey's iterative nhmmer approach for a deeper protein homology search 
+
+Only ran a single relativey easy positive control, \ac{FMN} ribiswitch on a protein domain profile generated specifically on the basis of association to the Rfam annotated riboswitch model.
+
+
+\section{Future directions}
+
+\subsection{Discovery pipeline extension}
+
+Improve tool selection, filtering steps and tool parameters fo
+
+Structural clustering and alignment for RNA exists 
+
+Incorporate covariance model clustering and combination
+
+Apply cluster-merging to strengthen signal to identify more distant homology.
+
+Investigate introducing binary logic (AND, OR, NOR) to the protein domain selection
+
+\subsection{Further targets for \ac{RNP} discovery}
+
+Expand beyond BLUF to other light-pathway anchors (e.g. phytochromes, cryptochromes). 
+And more!
+
+\subsection{Experimental validation}
+
+Expand search for promising candidates and experimentally validate (chemical probing with SHAPE)
+
+
+\section{Conclusions}
+
+A protein first approach works for RNA discovery.
+Under limited \ac{RNP} or cis-regulatory element cases blah blah\dots
+

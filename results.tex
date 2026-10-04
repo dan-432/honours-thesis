@@ -1,3 +1,415 @@
 \chapter{Results}
 
-\section{The results are in}
+The central focus of this project was to develop a pipeline to identify structured RNA elements and to apply this in the search of candidate light-responsive RNA elements (or ``light switches'').
+
+
+\section{Protein homology can be rediscovered from known \ac{RNP}s}
+
+% go through fmn riboswitch, other riboswitches and crispr examples briefly
+The hypothesis this work is based on is that protein homology can be leveraged to identify RNA homology in \ac{RNP} systems, on the basis that they are encoded at neighbouring loci.
+Approaching the hypothesis from the other direction, the positive control pipeline described in Figure~\ref{fig:poscontrol} searches for protein homology in coding sequences neighbouring known RNA family members.
+Clustering of neighbouring protein sequences was used as a proxy for homology.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption[Top cluster for each RNA family]{\textbf{Top cluster (by genome prevalence) for each RNA family} }
+    \label{tab:results_summary}
+    \input{tables/interproscanhits-summary.tex}
+    \par\smallskip
+    \begin{minipage}{\textwidth}
+        \raggedright
+        $^{*}$ Prevalence is the fraction of available genomes containing the cluster.\\
+        $^{**}$ Position is given as strand-relative direction and gene rank (e.g.\ upstream 1 = RNA element immediately upstream of the cluster gene).
+    \end{minipage}
+\end{table}
+
+Using protein clustering by alignment to infer protein homology in neighbouring coding sequences of RNA family members, the positive control pipeline was able to rediscover known \ac{RNP} systems (Table~\ref{tab:results_summary}).
+The \ac{FMN} riboswitch, \ac{SAM} riboswitch, \ac{CRISPR}-DR42 and Fluoride riboswitch were all found to be associated with particular conserved protein domains, RibD C-terminal domain, Cys/Met metabolism PLP-dependent enzyme, CRISPR-associated protein Cas2 and CrcB-like protein camophor resistance, respectively.
+These protein domains were identified in the highest prevalence cluster of coding sequences neighbouring the RNA family members, and the position of the RNA element relative to the protein-coding gene was consistent with known biology [cite papers].
+
+It seems likely that annotation errors play at least some role in the lack of complete consensus on position relative to homologous protein coding gene.
+
+\section{RNA homology can be rediscovered from known \ac{RNP}s}
+
+A selection of riboswitches and the \ac{CRISPR} repeat element were found to be associated with particular conserved protein domains.
+With this direction shown it remains to show that RNA homology can be identified anchoring the search with a conserved protein.
+Any of these could presumably be used for validation of the computational discovery pipeline.
+The \ac{CRISPR}-Cas system would be interesting to validate; however, in its current state the discovery pipeline extracts only intergenic regions on the same strand as the protein anchor.
+Further, the prevalence of the \ac{RNP} and genome availability (limited by Rfam and Entrez entries) were deciding factors.
+As such, the \ac{FMN} riboswitch and its associated protein domain, the RibD C-terminal domain, were used for positive control validation.
+
+\subsection{\ac{FMN} riboswitch as a positive control}
+% explain rna -> protein -> rna idea for val
+
+The RibD C-terminal domain, with a profile \ac{HMM} generated in the positive control preparation pipeline (Section~\ref{sec:positive_control_hmm}), was used as an anchor to investigate if the \ac{FMN} riboswitch signal could be rediscovered.
+The bacterial family Microbacteriaceae was used as a search space, informed by the phylogenetic distribution of the riboswitch and protein pairing found in the positive control preparation pipeline (Appendix Figure \ref{fig:fmn-itol-tree}).
+726 loci were identified in the Microbacteriaceae search space, when searched with the curated \ac{FMN} Riboswitch model, E-value $<\times10^{-5}$.
+The outputs of the discovery pipeline were run through the iterative expansion approach described in Section~\ref{sec:iterative-expansion}, and the resulting alignments were analysed for covariation with R-scape \citep{Rivas2020} and compared to the true-positive alignment identified with the Rfam curated \ac{FMN} Riboswitch model.
+Pipeline threshold for this run (and all runs) are defined in Table~\ref{tab:thresholds}.
+The resulting candidates are shown in Table~\ref{tab:rscape_summary}, ordered by coordinate overlap identity with the true-positive alignment, along with their covariation analysis F-scores and median summed bit scores against the true-positive alignment (both candidate into the true-positive alignment, and vice versa).
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption[FMN riboswitch rediscovery candidates]{\textbf{FMN riboswitch rediscovery candidates.}
+($N = 300$ emitted sequences per model)}
+\label{tab:rscape_summary}
+\input{tables/fmn-positive-candidate-summary.tex}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\raggedright
+$^{*}$ R-scape F-score for recovery of covarying base pairs relative to the secondary structure annotated within each candidate's own alignment, at $E \le 0.05$.\\
+$^{**}$ Fraction of the candidate's hit set (sequence accessions) also present in the true-positive alignment.\\
+$^{\dagger}$ Mean coordinate overlap (intersection/union) of the hits shared between the candidate and the true-positive alignment.\\
+$^{\ddagger}$ Sum of the median \texttt{cmsearch} bit scores of candidate sequences scored against \ac{FMN} Riboswitch and \ac{FMN} Riboswitch sequences scored against the candidate.
+\end{minipage}
+\end{table}
+
+Table \ref{tab:rscape_summary} shows 9 candidates with a mean coordinate overlap of $>0.67$ with the true-positive alignment, and summed median bit scores of $>32$.
+This indicates that the candidates identify the same genomic loci as the true-positive alignment, and that the candidates' probabilistic models are describing much of the same structural information.
+Secondary structures were predicted for all candidates and the top 3, by highest coordinate overlap identity to the true-positive alignment are shown in Figure~\ref{fig:drh-top-structures}.
+The predicted structures of the remaining candidates are shown in Appendix Figure~\ref{fig:drh-appendix-structures-1}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_379_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 379}
+        \label{fig:cand379-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_531_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 531}
+        \label{fig:cand531-struct}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_539_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 539}
+        \label{fig:cand539-struct}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/fmn_cm_on_micro_1.cacofold.R2R.sto.pdf}
+        \caption{Positive control}
+        \label{fig:cand-positive-control-struct}
+    \end{subfigure}
+
+    \caption[Predicted covarying secondary structures of the three candidates with highest identity to the positive control]{\textbf{Predicted covarying secondary structures of the three FMN riboswitch candidates with highest coordinate overlap identity to the positive control.} 
+    R-scape CaCoFold structures generated from iteratively expanded alignments, ranked by mean coordinate overlap (intersection/union) of hits shared with the Rfam-annotated true-positive alignment. 
+    \textbf{(a)}:--\\textbf{(d)}: show the three candidates with highest overlap identity; 
+    \textbf{(d)}: shows the same analysis run on the true-positive alignment (\texttt{fmn\_cm\_on\_micro}) for comparison.}
+    \label{fig:drh-top-structures}
+\end{figure}
+
+The CaCoFold predicted structures of the three candidates with highest coordinate overlap identity to the true-positive alignment (Figure~\ref{fig:drh-top-structures}) illustrate the presence of covarying base pairs in the same regions as the true-positive alignment, and the overall secondary structure is similar (Figure~\ref{fig:drh-top-structures}).
+
+\subsection{Negative control validation}
+% explain choice of 
+
+Four membrane-associated protein domains were chosen as negative controls on the basis that they were unlikely to be involved in \ac{RNP} systems.
+One of the four domains returned promising structured RNA candidates from the computational discovery pipeline [talk about in discussion]
+The search space for all was the genus \emph{Burkholderia}, which was chosen as all four domains are present in this genus.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption[Negative control candidates]{\textbf{Negative control candidates.}}
+\label{tab:negative_control_candidates}
+    \input{tables/negative-control-candidates.tex}
+
+\par\smallskip
+\begin{minipage}{\textwidth}
+\raggedright
+$^{*}$ Number of covarying base pairs identified by R-scape at $E \le 0.05$; equal to true positives (TP) since FP\,=\,0 in all cases.\\
+$^{\dagger}$ No F-score available: the covariance model built for this cluster contained zero base pairs, so no reference structure existed against which to compute recovery statistics.\\
+TolC (IPR005594, PF03895) was also screened in both directions (3 clusters total) but produced no clusters with a significant covarying pair.
+\end{minipage}
+\end{table}
+
+Of the three negative control domains, only the SecY and YgaP-like inner membrane protein domains returned candidates with at least one covarying pair, E-value $\leq 0.05$ (Table~\ref{tab:negative_control_appendix}).
+Of these the F-scores are low, and the number of covarying pairs is small, compared to the positive control candidates, indicating that these are likely false positives, illustrating the selective nature of the discovery pipeline.
+These results outline expected behaviour of the discovery pipeline when applied to protein domains that are unlikely to be associated with structured RNA elements, and provide a baseline for comparison with the positive control results.
+
+\section{\ac{BLUF} domain \ac{RNP} search}
+
+Having tested the discovery pipeline with positive and negative controls, the pipeline was applied to the \ac{BLUF} domain, which is a light-responsive protein domain.
+The \ac{BLUF} domain anchored search was conducted in \emph{Burkholderia}, as this genus contains a 701 \ac{BLUF} domain-containing protein sequences \citep{Blum2025}.
+
+\subsection{Identified candidates}
+
+% show the promising structures, table of covarying pairs, alphafold predictions
+The discovery pipeline identified two promising structured RNA candidates, Candidate 130 and Candidate 332, which were found in the downstream flanking sequences of \ac{BLUF} domain-containing proteins.
+These candidates were additionally analysed with the iterative expansion approach described in Section~\ref{sec:iterative-expansion}, and the resulting alignments were analysed for covariation with R-scape \citep{Rivas2020}.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption[Covariation analysis for the two BLUF-associated candidates]{\textbf{Covariation analysis for the two BLUF-associated candidates, before and after iterative expansion of the covariance model.}}
+\label{tab:bluf_rscape}
+    \input{tables/bluf-cand-cov.tex}
+
+\par\smallskip
+\begin{minipage}{\textwidth}
+\raggedright
+$^{*}$ Number of covarying base pairs identified by R-scape at $E \le 0.05$; equal to true positives (TP) since FP\,=\,0 in all cases.
+\end{minipage}
+\end{table}
+
+Iterative expansion yielded more sequences for both Candidate 130 and 332, the number of covarying base pairs decreased for Candidate 130 from 4 to none, and increased for Candidate 332 from 1 to 2, similarly the F-score increased for Candidate 332 and decreased for Candidate 130 (Table~\ref{tab:bluf_rscape}).
+This indicates that the original alignment for Candidate 130 better describes a structured element, while the iterative expansion approach improved the alignment for Candidate 332.
+
+With F-scores of 11.27 and 5.00, respectively, both candidates show some evidence of covariation, but similar strength to that of the negative control candidates.
+With 4 and 2 identified covarying base pairs for these candidates is higher than that of the negative control candidates, suggesting there may be some structural signal present.
+Predicted secondary structures are shown in Figure~\ref{fig:bluf-rscape-structure}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}
+        [t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/bluf-candidate-structures/cluster_130_1.cacofold.R2R.sto.pdf} 
+        \caption{Candidate 130} \label{fig:cand130-secondary}
+    \end{subfigure}
+    \begin{subfigure}
+        [t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/bluf-candidate-structures/cluster_332_alignment_02_1.cacofold.R2R.sto.pdf} 
+        \caption{Candidate 332} \label{fig:cand332-secondary}
+    \end{subfigure}
+    \caption[Predicted covarying secondary structures of the two BLUF-associated candidates]{\textbf{Predicted covarying secondary structures of the two BLUF-associated candidates.}
+    Predicted covarying secondary structures of the two most promising structured RNA elements identified through the discovery pipeline.
+    Structures are generated by R-scape CaCoFold.
+    \textbf{(a)}: shows the predicted secondary structure of candidate 130 as output by the computational discovery pipeline described in the methods,
+    \textbf{(b)}: shows that for candidate 332 run through the iterative expansion approach described in the methods.}
+    \label{fig:bluf-rscape-structure}
+\end{figure}
+
+Candidate 130 shows some promise for an alternative structure with a conserved CGGCG and GCCGC sequence not predicted to base pair in the CaCoFold structure, but which could form a stem-loop structure with covarying base pairs.
+
+
+
+\subsection{\ac{RNP} complex prediction}
+
+3D structure and interaction prediction was done with AlphaFold 3 \citep{Jumper2024} using the highest-confidence model for each candidate.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}
+        [t]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cand130-BLUF-struct.png} 
+        \caption{Candidate 130} \label{fig:cand130-bluf}
+    \end{subfigure}
+    \begin{subfigure}
+        [t]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cand332-BLUF-struct.png} 
+        \caption{Candidate 332} \label{fig:cand332-bluf}
+    \end{subfigure}
+    \caption[Predicted ribonucleoprotein complex structure]{\textbf{Predicted ribonucleoprotein complex structure of BLUF with identified RNA candidates.}
+    Predicted structures of representative RNA and protein sequences from the two most promising structured RNA elements identified through the discovery pipeline.
+    Predictions were made with AlphaFold 3 and the highest-confidence model is shown.
+    \textbf{(a)} shows the predicted structure and interaction of candidate 130 with the \ac{BLUF} containing protein it was found near,
+    \textbf{(b)} shows that for candidate 332.}
+    \label{fig:bluf-rnp}
+\end{figure}
+
+RNA binding is predicted around the \ac{BLUF} \ac{FAD} binding site identified by \citet{Kita2005}.
+
+\section{Covariance model clustering}
+
+Clustering covariance models (CMs) requires a pairwise score that is both reliable and statistically robust, so that a distance between two models can be interpreted rather than just ranked. 
+This section describes how candidate scoring approaches were benchmarked against Rfam clans, and how the chosen approach was then applied to cluster the positive control candidates.
+
+Rfam groups families into clans on the basis of shared evolutionary origin, which makes clan membership a useful, if imperfect, ground truth for benchmarking: models in the same clan should recognise each other's sequences, whereas models from different clans should not. 
+Rfam clan membership was therefore used to benchmark the pairwise scoring methods.
+
+\subsection{Clustering approaches}
+
+Three approaches were tested: [one which searched for a common ancestor with a genetic algorithm, one which ..., and one which ...]. 
+Each was evaluated on its ability to distinguish within-clan pairs from all other pairs (Table~\ref{tab:classifier_comparison}).
+
+\input{tables/cluster_approach_clan_comparisons.tex}
+
+All three approaches separated within-clan pairs from other pairs. 
+The similarity ratio and the summed \ac{KS} statistic performed almost identically (AUC = 0.832 and 0.835), while the summed median bit score against the null performed less well (AUC = 0.767). 
+Because the \ac{KS} approach provides a per-pair test against a null distribution, which the similarity ratio does not, it was used for all remaining analyses.
+
+\subsection{Distributional differences to the null}
+
+The \ac{KS} approach compares the bit scores obtained when one model scores the sequences of another against a null distribution of shuffled sequences, in each direction. 
+Figure~\ref{fig:ks-worked-example} shows this for two pairs. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.65\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cm-simile/SNORA17_SNORA43_distribution.pdf}
+        \caption{SNORA17 vs.\ SNORA43}
+        \label{fig:snora17-snora43-dist}
+    \end{subfigure}
+
+    \vspace{1em}
+
+    \begin{subfigure}[t]{0.65\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/cm-simile/SNORA17_Pyrobac-1_distribution.pdf}
+        \caption{SNORA17 vs.\ Pyrobac-1}
+        \label{fig:snora17-pyrobac-dist}
+    \end{subfigure}
+    \hfill
+
+    \caption[Distributional comparison for a within-clan and a between-clan model pair]{\textbf{Distributional comparison of bitscores for a within-clan and a between-clan model pair.} 
+    Cross comparison bit score distributions are compared to null sequence distributions.
+    Self bit scores (sequences scored against their model of origin) are shown for comparison.
+    \textbf{(a)}: SNORA17 (a) vs.\ SNORA43 (b), both members of the same clan; the cross-comparison distribution (SNORA43 sequences scored against the SNORA17 model) is compared to null sequences (KS $D=0.673$, $p=1.66\times10^{-19}$ scored against SNORA43; $D=0.557$, $p=3.22\times10^{-30}$ scored against SNORA17). 
+    \textbf{(b)}: SNORA17 (a) vs.\ Pyrobac-1 (b), from different clans;  (KS $D=0.263$, $p=5.26\times10^{-7}$; $D=0.112$, $p=0.112$). }
+    \label{fig:ks-worked-example}
+\end{figure}
+
+For SNORA17 and SNORA43, which belong to the same clan, the cross-comparison scores were strongly shifted from the null in both directions ($D = 0.673$ and $D = 0.557$; $p = 1.66 \times 10^{-19}$ and $3.22 \times 10^{-30}$). 
+For SNORA17 and Pyrobac-1, which belong to different clans, the shift was much weaker in one direction ($D = 0.263$, $p = 5.26 \times 10^{-7}$) and not significant in the other ($D = 0.112$, $p = 0.112$).
+Summing the two directional statistics therefore gives a single, symmetric measure of mutual recognition.
+
+Across all pairs tested, the summed \ac{KS} statistic was significantly higher for within-clan pairs ($n = 27$) than for other pairs ($n = 919$; Wilcoxon $p = 2.76 \times 10^{-9}$; Figure~\ref{fig:ks-boxplot}). 
+Because every model is compared against a single null population rather than a separate null for each pairwise comparison, this separation does not depend on pair-specific null generation, which is also considerably cheaper to compute.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/results/cm-simile/ksmwcompare_boxplot.pdf}
+    \caption[Within- vs.\ between-clan separation using the KS statistic against a single null population]
+    {\textbf{Within- vs.\ between-clan separation using the KS statistic compared against a single null population.} 
+    Unlike the bitscore-median approach, this compares the full score distribution to only one bootstrap null population per model rather than one null per pairwise comparison, separation of the approach tested (Wilcoxon $p = 2.76\times10^{-9}$; Table~\ref{tab:classifier_comparison}).
+    The $y$-axis is the sum of 2 two-sample KS statistics, $D$, of the bit score distribution against the null (both $D_{A into B}$ and $D_{B into A}$).
+    A pair is labelled within-clan ($n = 27$) if both families belong to the same Rfam clan, and other ($n = 919$) otherwise, including pairs involving a family with no clan assignment.}
+    \label{fig:ks-boxplot}
+\end{figure}
+
+\subsection{Clustering positive control candidates}
+
+The summed \ac{KS} statistic was used to cluster the candidate models together with the FMN riboswitch model (RF00050), using the distance $2 - (D_{A \rightarrow B} + D_{B \rightarrow A})$ and average-linkage hierarchical clustering (Figure~\ref{fig:candidate-clustering}). 
+The resulting tree shows candidates clustering into three main groups, one with the FMN riboswitch model clustering with candidates 539, 384, 491, 416, 40, 531, 379, 35 and 647, which were also the candidates with the highest coordinate overlap identity to the true-positive alignment (Table~\ref{tab:rscape_summary}).
+Candiates 442, 109 and 396 do not cluster with the FMN riboswitch model, and are therefore likely to be distinct from the true-positive alignment.
+109 and 396 cluster together, which can also be observed from their predicted secondary structures (Appendix Figure~\ref{fig:drh-appendix-structures-2}).
+In downstream analysis these candidates could be combined into a single model, potentially improving the alignment and covariation signal.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/results/candidate_clustering_dendrogram.pdf}
+        \caption{}
+        \label{fig:cluster-dendrogram}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.6\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/results/candidate_clustering_heatmap.pdf}
+        \caption{}
+        \label{fig:cluster-heatmap}
+    \end{subfigure}
+    \caption[Clustering of candidate covariance models by cross-recognition]{%
+    \textbf{Clustering of candidate covariance models by cross-recognition.}
+    \textbf{(a)} Hierarchical clustering (average linkage) of the candidate models and the FMN
+    riboswitch model (RF00050), using the distance $2 - (D_{A \rightarrow B} + D_{B \rightarrow A})$,
+    where $D$ is the two-sample Kolmogorov--Smirnov statistic against the shuffled null in each
+    direction. \textbf{(b)} Pairwise summed KS statistic, with models ordered as in (A); higher
+    values indicate that the two models recognise each other's sequences more strongly.
+    Candidates are labelled by cluster number.}
+    \label{fig:candidate-clustering}
+\end{figure}
+
+% \section{Covariance model clustering}
+
+% As can be observed
+% The approach taken to covariance model clustering in this study was to look for a reliable and statistically robust pairwise scoring method.
+
+% Rfam annotates families into clans where they share a common evolutionary origin.
+% Rfam clan membership was used for preliminary benchmarking of covariance model pairwise scoring.
+
+% \subsection{Clustering approaches}
+
+% Three approaches were tested: one which searched for a common ancestor by a genetic algorithm, one which 
+
+% \input{tables/cluster_approach_clan_comparisons.tex}
+
+% All three approaches separated within-clan from other pairs (Table~\ref{tab:classifier_comparison}). 
+% The similarity ratio and the summed \ac{KS} statistic performed almost identically (AUC = 0.832 and 0.835), while the summed median bit score against the null performed less well (AUC = 0.767). 
+% Because the \ac{KS} approach provides a per-pair test against a null distribution, which the similarity ratio does not, it was used for the remaining analyses.
+
+% \subsection{Distributional differences to the null}
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[t]{0.65\textwidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{figures/results/cm-simile/SNORA17_SNORA43_distribution.pdf}
+%         \caption{SNORA17 vs.\ SNORA43}
+%         \label{fig:snora17-snora43-dist}
+%     \end{subfigure}
+
+%     \vspace{1em}
+
+%     \begin{subfigure}[t]{0.65\textwidth}
+%         \centering
+%         \includegraphics[width=\linewidth]{figures/results/cm-simile/SNORA17_Pyrobac-1_distribution.pdf}
+%         \caption{SNORA17 vs.\ Pyrobac-1}
+%         \label{fig:snora17-pyrobac-dist}
+%     \end{subfigure}
+%     \hfill
+
+%     \caption[Distributional comparison for a within-clan and a between-clan model pair]{\textbf{Distributional comparison of bitscores for a within-clan and a between-clan model pair.} 
+%     Cross comparison bit score distributions are compared to null sequence distributions.
+%     Self bit scores (sequences scored against their model of origin) are shown for comparison.
+%     \textbf{(a)}: SNORA17 (a) vs.\ SNORA43 (b), both members of the same clan; the cross-comparison distribution (SNORA43 sequences scored against the SNORA17 model) is compared to null sequences (KS $D=0.673$, $p=1.66\times10^{-19}$ scored against SNORA43; $D=0.557$, $p=3.22\times10^{-30}$ scored against SNORA17). 
+%     \textbf{(b)}: SNORA17 (a) vs.\ Pyrobac-1 (b), from different clans;  (KS $D=0.263$, $p=5.26\times10^{-7}$; $D=0.112$, $p=0.112$). }
+%     \label{fig:ks-worked-example}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{figures/results/cm-simile/ksmwcompare_boxplot.pdf}
+%     \caption[Within- vs.\ between-clan separation using the KS statistic against a single null population]
+%     {\textbf{Within- vs.\ between-clan separation using the KS statistic compared against a single null population.} 
+%     Unlike the bitscore-median approach, this compares the full score distribution to only one bootstrap null population per model rather than one null per pairwise comparison, separation of the approach tested (Wilcoxon $p = 2.76\times10^{-9}$; Table~\ref{tab:classifier_comparison}).
+%     The $y$-axis is the sum of 2 two-sample KS statistics, $D$, of the bit score distribution against the null (both $D_{A into B}$ and $D_{B into A}$).
+%     A pair is labelled within-clan ($n = 27$) if both families belong to the same Rfam clan, and other ($n = 919$) otherwise, including pairs involving a family with no clan assignment.}
+% \end{figure}
+
+% \subsection{Clustering positive control candidates}
+
+% \begin{figure}[htbp]
+%     \centering
+%     \begin{subfigure}[b]{0.6\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figures/results/candidate_clustering_dendrogram.pdf}
+%         \caption{}
+%         \label{fig:cluster-dendrogram}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.6\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{figures/results/candidate_clustering_heatmap.pdf}
+%         \caption{}
+%         \label{fig:cluster-heatmap}
+%     \end{subfigure}
+%     \caption[Clustering of candidate covariance models by cross-recognition]{%
+%     \textbf{Clustering of candidate covariance models by cross-recognition.}
+%     \textbf{(a)} Hierarchical clustering (average linkage) of the candidate models and the FMN
+%     riboswitch model (RF00050), using the distance $2 - (D_{A \rightarrow B} + D_{B \rightarrow A})$,
+%     where $D$ is the two-sample Kolmogorov--Smirnov statistic against the shuffled null in each
+%     direction. \textbf{(b)} Pairwise summed KS statistic, with models ordered as in (A); higher
+%     values indicate that the two models recognise each other's sequences more strongly.
+%     Candidates are labelled by cluster number.}
+%     \label{fig:candidate-clustering}
+% \end{figure}

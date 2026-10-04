@@ -1,0 +1,56 @@
+% ============================================================
+% Shared style definitions for the DarwinsRNAHunt methods figures.
+% \input this file from each diagram's preamble (after \usepackage{xcolor}
+% and \usetikzlibrary{...}) so colours/styles stay consistent everywhere.
+%
+% Visual grammar used throughout:
+%   - white box, single border   = external / raw resource
+%   - white box, double border   = curated data artifact (output of a section)
+%   - coloured box, single border = an internal processing step
+%   - coloured/white, dashed border = Snakemake checkpoint (dynamic re-evaluation)
+%   - white box, short-dashed border = static external file (not produced by the pipeline)
+% ============================================================
+
+% ---------- category colours (ColorBrewer Set3-style) ----------
+\definecolor{catDefine}{HTML}{FFFFFF}
+\definecolor{catSelect}{HTML}{FFFFFF}
+\definecolor{catAcquire}{HTML}{FFFFFF}
+\definecolor{catLocalize}{HTML}{FFFFFF}
+\definecolor{catExtract}{HTML}{FFFFFF}
+\definecolor{catCombine}{HTML}{FFFFFF}
+\definecolor{catCluster}{HTML}{FFFFFF}
+\definecolor{catModel}{HTML}{FFFFFF}
+\definecolor{catValidate}{HTML}{FFFFFF}
+\definecolor{catReport}{HTML}{FFFFFF}
+
+% ---------- Kea Palette (defined for optional future restyling; unused for now) ----------
+\definecolor{keaGreen}{HTML}{6C803A}
+\definecolor{darkBrown}{HTML}{7B5C34}
+\definecolor{lightBrown}{HTML}{AB7C47}
+\definecolor{keaYellow}{HTML}{CCAE42}
+\definecolor{keaOrange}{HTML}{D73202}
+\definecolor{charcoal}{HTML}{272318}
+\definecolor{lightGrey}{HTML}{D3CDBF}
+
+\tikzset{
+    font=\fontsize{7}{8}\selectfont,
+    >={Latex[length=2mm,width=1.4mm]},
+    every path/.style={thick},
+    % internal processing step
+    stage/.style={rectangle, rounded corners=2pt, draw=black, thin,
+        minimum height=1.05cm, text width=3.6cm, align=center, inner sep=3pt},
+    % external / raw resource (input)
+    res/.style={rectangle, rounded corners=2pt, draw=black, thin, fill=white,
+        minimum height=1cm, text width=4.2cm, align=center, inner sep=3pt},
+    % static external file, not produced by this pipeline
+    ext/.style={rectangle, rounded corners=2pt, draw=black!55, dash pattern=on 2.2pt off 1.6pt,
+        thin, minimum height=0.85cm, text width=3.1cm, align=center, fill=white,
+        font=\fontsize{6.3}{7.3}\selectfont, inner sep=2.5pt},
+    % Snakemake checkpoint modifier (combine with stage/res)
+    ckpt/.style={dashed, line width=0.9pt},
+    % deliverable / output-artifact modifier: crosses a section boundary
+    deliver/.style={double, double distance=1.2pt, line width=0.85pt},
+    lbl/.style={font=\fontsize{8.5}{9.5}\bfseries\selectfont},
+    sublbl/.style={font=\fontsize{7}{8}\itshape\selectfont},
+    node distance=0.55cm and 2.6cm
+}

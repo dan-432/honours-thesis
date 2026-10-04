@@ -1,0 +1,43 @@
+\documentclass[tikz, border=8pt]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, calc}
+\input{dag_common.tex}
+
+\begin{document}
+\begin{tikzpicture}[
+    loopstage/.style={stage, fill=catModel!60, text width=3.0cm},
+    edgelab/.style={font=\fontsize{6.5}{7.5}\selectfont\itshape, inner sep=2pt},
+]
+
+% ---------------- the loop ----------------
+\node[loopstage] (s41) at ({3.4*cos(90)},{1.9*sin(90)})   {\textbf{4.1} Search for deeper homology};
+\node[loopstage] (s42) at ({3.4*cos(-30)},{1.9*sin(-30)}) {\textbf{4.2} Align back to covariance model};
+\node[loopstage] (s43) at ({3.4*cos(210)},{1.9*sin(210)}) {\textbf{4.3} Build new covariance model};
+
+\draw[->, thick] (s41) to[bend left=22]
+    node[edgelab, midway, above right, align=left] {sequences with hits\\e-value $\leq 1\times10^{-5}$} (s42);
+\draw[->, thick] (s42) to[bend left=22]
+    node[edgelab, midway, below, align=center] {multiple sequence alignment} (s43);
+\draw[->, thick] (s43) to[bend left=22]
+    node[edgelab, midway, above left, align=right] {covariance model} (s41);
+
+\node[sublbl, text width=2.7cm, align=center] at (0,0.1)
+    {repeat until no new homology is found\\($<$20 sequence change)};
+
+% ---------------- header ----------------
+\node[lbl, above left=1.15cm and 2cm of s41] (ie) {4. Iterative Expansion};
+
+% ---------------- entry ----------------
+\node[res, text width=4.0cm, font=\small, above right=0.3cm and 1.3cm of s41] (ctx)
+    {from \S3.6:\\\textbf{covariance model}};
+\node[res, text width=4.0cm, font=\small, below=0.35cm of ctx] (ctx2)
+    {from \S3.2:\\\textbf{flanking sequences}};
+\draw[->] (ctx.west) to[out=225, in=55] (s41.east);
+\draw[->] (ctx2.west) to[out=180, in=-25] (s41.east);
+
+% ---------------- exit ----------------
+\node[sublbl, text width=2.6cm, align=center, below left=1cm and 0.1cm of s43] (exit) {after final iteration};
+\draw[->, dashed] (s43.west) to[out=180, in=90] (exit.north);
+
+\end{tikzpicture}
+\end{document}

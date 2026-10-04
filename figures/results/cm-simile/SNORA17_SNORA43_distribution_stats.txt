@@ -1,0 +1,10 @@
+model_a=SNORA17
+model_b=SNORA43
+ks_b_on_a_vs_null_d=0.673125
+ks_b_on_a_vs_null_p=1.65791e-19
+ks_a_on_b_vs_null_d=0.556613
+ks_a_on_b_vs_null_p=3.21607e-30
+ks_b_on_a_vs_self_d=0.94
+ks_b_on_a_vs_self_p=3.56869e-77
+ks_a_on_b_vs_self_d=0.975
+ks_a_on_b_vs_self_p=5.38012e-83

@@ -1,7 +1,7 @@
 \chapter{Introduction}
 
 RNAs play a wide range of roles in cellular processes, many of which have been harnessed for biotechnological applications, and are likely to have many more functions yet to be discovered.
-This project aims to identify novel conserved RNA structural motifs associated with light-sensing gene families in bacteria.
+This project aims to identify novel conserved RNA structural elements associated with light-sensing gene families in bacteria.
 This introduction provides background and rationale for the screening of novel functional RNA motifs in bacterial genomes, and outlines the aims and significance of the project.
 
 \section{Ribonucleic Acids}
@@ -24,7 +24,7 @@ Beyond the ribosome and spliceosome, several small self-cleaving ribozymes exist
 
 RNA has been central to several major biotechnological breakthroughs. 
 \ac{CRISPR}-Cas9 gene editing harnesses guide RNAs for programmable genome modification \citet{Jinek2012}. 
-\ac{mRNA} vaccines against \ac{COVID-19} demonstrated the therapeutic potential of synthetic \acp{mRNA} \citep{Polack2020}. 
+\ac{mRNA} vaccines against \ac{COVID-19} demonstrated the therapeutic potential of synthetic \acp{mRNA} \citep{Leong2025}. 
 \ac{RNAi} enables targeted gene silencing in research and therapeutics \citep{Fire1998}.
 
 RNA aptamers such as Spinach bind fluorogenic compounds and fluoresce upon binding, enabling RNA visualization in living cells \citep{Paige2011}.
@@ -33,6 +33,7 @@ These RNAs, involved in fluorescence and photoreception, have broad relevance fo
 
 \subsection*{Ribonucleoprotein Complexes}
 
+Make sure to introduce RNPs vaguely enough to include riboswitches
 While some RNAs function independently, many operate in \ac{RNP} complexes.
 The ribosome is one such \ac{RNP} with critical function in all cells.
 This large complex catalyses peptide bond formation, with \ac{rRNA} forming the catalytic core, while ribosomal proteins provide structural support and regulatory functionality \citep{Wahl2009}.
@@ -59,18 +60,18 @@ They are typically embedded within messenger RNAs and control gene expression th
 Riboswitch mechanisms vary widely.
 Figure~\ref{fig:riboswitch-mechanism} illustrates several experimentally validated regulatory strategies \citep{Kavita2023}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/riboswitch-mechanism.png}
-    \caption{\textbf{Typical riboswitch regulatory mechanisms.} 
-    Riboswitches control gene expression through ligand-induced conformational changes that affect either transcription or translation.
-    Ligands ("L") bind aptamers resulting in 
-    \textbf{Transcriptional control (top):} Riboswitches can either promote an early termination when ligand-bound (left) or prevent termination (right) allowing transcription through the ORF. 
-    \textbf{Translational control (bottom):} Riboswitches can either make the ribosome binding site less accessible (left) or more accessible (right) when ligand-bound.
-    ORF = open reading frame; RBS = ribosome binding site. 
-    Created in  https://BioRender.com}
-    \label{fig:riboswitch-mechanism}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{figures/introduction/riboswitch-mechanism.png}
+%     \caption[Typical riboswitch regulatory mechanisms]{\textbf{Typical riboswitch regulatory mechanisms.} 
+%     Riboswitches control gene expression through ligand-induced conformational changes that affect either transcription or translation.
+%     Ligands ("L") bind aptamers resulting in 
+%     \textbf{Transcriptional control (top):} Riboswitches can either promote an early termination when ligand-bound (left) or prevent termination (right) allowing transcription through the ORF. 
+%     \textbf{Translational control (bottom):} Riboswitches can either make the ribosome binding site less accessible (left) or more accessible (right) when ligand-bound.
+%     ORF = open reading frame; RBS = ribosome binding site. 
+%     Created in  https://BioRender.com}
+%     \label{fig:riboswitch-mechanism}
+% \end{figure}
 
 Transcriptional riboswitches control formation of Rho-independent terminators—intrinsic termination structures consisting of a hairpin followed by a uridine-rich tract. 
 Depending on the riboswitch, ligand binding may promote terminator formation or stabilize an antiterminator structure, enabling transcriptional read-through.
@@ -106,7 +107,7 @@ Much lower... more reliable for identifying deeper homology than RNA
 
 \section{Current Approaches to Functional RNA Discovery}
 
-% Don't focus so much on riboswitches, we are more focused on RNA:protien complexes
+% Don't focus so much on riboswitches, we are more focused on RNA:protien complexes 
 It is predicted that a large number of riboswitches remain undiscovered, potentially on the order of thousands \citep{Kavita2023}.
 Ronald Breaker and colleagues have pioneered systematic riboswitch and ribozyme discovery, identifying over 55 distinct riboswitch classes to date \citep{Breaker2022}.
 Other major RNA-related discoveries, such as ribosomes and \ac{CRISPR}-Cas systems, occurred through more exploratory research approaches \citep{Bruck2025}.
@@ -123,11 +124,11 @@ Comparative approaches using multiple homologous sequences provide greater predi
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/covariationfig.pdf}
-    \caption{\textbf{Identification of covarying sites in RNA alignments.} 
+    \includegraphics[width=0.6\textwidth]{figures/introduction/covariationfig.pdf}
+    \caption[Identification of covarying sites in RNA alignments]{\textbf{Identification of covarying sites in RNA alignments.} 
     Covarying sites are pairs of nucleotides that mutate together across evolution to preserve base pairing, providing evidence of conserved RNA structure.
     In this example, a C-G base pair in one species is replaced by an A-U base pair in another species, maintaining the overall secondary structure of the RNA.
-    Covariation analysis is a powerful tool for identifying conserved RNA structures across related species, enabling the discovery of functional RNA motifs. }
+    Covariation analysis is a powerful tool for identifying conserved RNA structures across related species, enabling the discovery of conserved structural features. }
     \label{fig:covariation}
 \end{figure}
 
@@ -172,8 +173,8 @@ Beyond biotechnology, fundamental understanding of natural RNA-based systems has
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/proteinfirst}
-    \caption{\textbf{A protein-first approach to RNA discovery.} 
+    \includegraphics[width=0.8\textwidth]{figures/introduction/proteinfirst.pdf}
+    \caption[A protein-first approach to RNA discovery]{\textbf{A protein-first approach to RNA discovery.} 
     Typical RNA discovery approaches are RNA-first, searching for conserved RNA structures across genomes and then associating them with nearby genes.
     In contrast, a protein-first approach leverages the relative ease of protein homology detection to identify conserved protein domains and deeper evolutionary relationships and then searches for conserved RNA structures in neighbouring non-coding regions.}
     \label{fig:protein-vs-rna-first-pipeline}
@@ -212,6 +213,19 @@ This simplifies both computational predictions and experimental validation.
 \section{Bioinformatic Approach}
 Walk through the bioinformatic approach taken here, the databases used, the tools used, and the rationale for each step.
 
+\section{Blue Light Using Flavin Domain}
+
+\ac{BLUF} 
+
+ligh switch!!!
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/introduction/BLUFcrystalpdbTll0078.png}
+    \caption[\ac{BLUF} structure]{\textbf{\ac{BLUF} structure.} }
+    \label{fig:bluf-structure}
+\end{figure}
+
 % Project aims (should be about half a page)
 \section{Project Aims and Hypothesis}
 
@@ -220,7 +234,7 @@ Gene-family-targeted approaches offer a computationally tractable approach for i
 Light-sensing gene families are of particular interest due to their importance in environmental adaptation and their potential relevance to biotechnological applications. 
 Identifying conserved RNA structures associated with these genes may reveal previously uncharacterized regulatory mechanisms.
 
-The first aim of this project is therefore to identify evolutionarily conserved RNA structural motifs located near light-sensing gene families across diverse bacterial lineages. 
+The first aim of this project is therefore to identify evolutionarily conserved RNA structural elements located near light-sensing gene families across diverse bacterial lineages. 
 By examining intergenic and transcript regions associated with these genes, the project aims to predict conserved RNA secondary structures using comparative genomics approaches that identify covariation patterns indicative of selective constraint.
 These may represent riboswitches, ribozymes, or other regulatory elements. 
 
@@ -229,7 +243,23 @@ This pipeline is intended to be reusable and adaptable for future studies, targe
 
 Together, these aims will contribute both new candidate RNA motifs and a methodological platform for search for structured RNAs in nature.
 
+% rewrite aims
+
+Further this work aims to fill a gap in the field for a reliable statistical method for measuring relatedness between RNA elements, which is important for understanding the evolutionary relationships and structural similarities among RNA motifs.
+
 % this is a terrible hypothesis, needs to be rewritten and testable.
 
-Evolutionarily conserved structural motifs within transcripts associated with specific gene families represent functional regulatory elements maintained by natural selection.
-These elements may employ diverse mechanisms, including ligand-dependent structural switching (riboswitches), catalytic self-cleavage (ribozymes), protein binding, or other structure-based regulatory strategies, to control gene expression.
+% Evolutionarily conserved structural motifs within transcripts associated with specific gene families represent functional regulatory elements maintained by natural selection.
+% These elements may employ diverse mechanisms, including ligand-dependent structural switching (riboswitches), catalytic self-cleavage (ribozymes), protein binding, or other structure-based regulatory strategies, to control gene expression.
+The central hypothesis of this work is that protein homology can be leveraged in the discovery of RNA homology in \ac{RNP} systems.
+
+
+\section{Vision Mātauranga}
+
+This project uses publicly available genomic datasets. 
+If genomes from Aotearoa-associated or taonga species are included, appropriate consideration will be taken regarding data sovereignty and potential social and cultural outcomes. 
+The Ngāi Tahu Research Consultation Committee has been contacted for consultation regarding the larger, overarching project this honors project falls under.
+
+The research in this project aligns most closely with the Vision Mātauranga theme of indigenous innovation, contributing computational tools with potential applications in biotechnology and plant science in Aotearoa New Zealand. 
+If this research leads to commercial outcomes, benifits of the research will be shared equitably.
+We remain open to collaboration with tanga te whenua.

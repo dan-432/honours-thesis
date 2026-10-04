@@ -1,0 +1,15 @@
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption[Comparison of pairwise scoring approaches on Rfam clans]{\textbf{Separation of within-clan from other pairs by each scoring approach.} Within-clan ($n = 27$) and other ($n = 919$) pairs from annotated Rfam entries. AUC is the probability that a randomly chosen within-clan pair scores higher than a randomly chosen other pair; $p$-values are from a Wilcoxon rank-sum test.}
+\label{tab:classifier_comparison}
+\begin{tabular}{lccc}
+\hline
+\textbf{Approach} & \textbf{Statistic} & \textbf{AUC} & \textbf{95 \% CI} \\
+\hline
+Common ancestor (similarity ratio) & similarity ratio & 0.832 & [0.716 -- 0.934] \\
+Median bit score vs.\ null & summed medians & 0.767 & [0.560 -- 0.944] \\
+KS distribution vs.\ null & $D_{A\rightarrow B} + D_{B\rightarrow A}$ & 0.835 & [0.653 -- 0.957] \\
+\hline
+\end{tabular}
+\end{table}
