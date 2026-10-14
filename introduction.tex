@@ -2,9 +2,9 @@
 
 RNAs play a wide range of roles in cellular processes, many of which have been harnessed for biotechnological applications, and are likely to have many more functions yet to be discovered.
 This project aims to identify novel conserved RNA structural elements associated with light-sensing gene families in bacteria.
-This introduction provides background and rationale for the screening of novel functional RNA motifs in bacterial genomes, and outlines the aims and significance of the project.
+This introduction provides background and rationale for the screening of novel structured RNA elements in bacterial genomes, and outlines the aims and significance of the project.
 
-\section{Ribonucleic Acids}
+\section{Ribonucleic acids}
 
 The central dogma of molecular biology, first articulated by Francis Crick, describes the flow of genetic information: DNA $\rightarrow$ RNA $\rightarrow$ Protein \citep{Crick1970}.
 In this classical view, RNA serves primarily as an intermediate messenger, transcribing genetic information from DNA and translating it into proteins at the ribosome.
@@ -13,7 +13,7 @@ However, this perspective underrepresents the diversity in the roles of RNA mole
 In the hypothetical RNA world, RNA molecules are thought to have performed many of the roles now largely carried out by proteins and DNA, including catalysis, regulation, and information storage \citep{Kruger1982, Guerrier-Takada1983, Gilbert1986, Breaker2012}.
 Although these functions have been largely superseded by proteins and DNA, numerous RNA-based regulatory mechanisms persist in modern organisms.
 
-\section{Functional RNAs in Biology and Biotechnology}
+\subsection{Functional RNAs in biology and biotechnology}
 % needs a rewrite, this is just pasted together for now
 
 The diverse functional roles of RNA are driven by their structural and reactive diversity. 
@@ -23,7 +23,7 @@ Ribozymes are catalytic RNAs that accelerate chemical reactions, much like prote
 Beyond the ribosome and spliceosome, several small self-cleaving ribozymes exist in nature, including the hammerhead, hairpin, \ac{HDV}, glmS, twister, and pistol ribozymes \citep{Roth2014, Weinberg2015, Micura2020}. 
 
 RNA has been central to several major biotechnological breakthroughs. 
-\ac{CRISPR}-Cas9 gene editing harnesses guide RNAs for programmable genome modification \citet{Jinek2012}. 
+\ac{CRISPR}-Cas9 gene editing harnesses guide RNAs for programmable genome modification \citep{Jinek2012}. 
 \ac{mRNA} vaccines against \ac{COVID-19} demonstrated the therapeutic potential of synthetic \acp{mRNA} \citep{Leong2025}. 
 \ac{RNAi} enables targeted gene silencing in research and therapeutics \citep{Fire1998}.
 
@@ -31,9 +31,8 @@ RNA aptamers such as Spinach bind fluorogenic compounds and fluoresce upon bindi
 The photoriboswitch Werewolf-1, generated through \emph{in vitro} selection, responds to light by binding photoisomerizable ligands, offering potential for optogenetic control of gene expression \citep{Rotstan2020}.
 These RNAs, involved in fluorescence and photoreception, have broad relevance for medical research, biotechnology, and agricultural applications \citep{Micura2020}.
 
-\subsection*{Ribonucleoprotein Complexes}
+\subsection{Ribonucleoprotein complexes}
 
-Make sure to introduce RNPs vaguely enough to include riboswitches
 While some RNAs function independently, many operate in \ac{RNP} complexes.
 The ribosome is one such \ac{RNP} with critical function in all cells.
 This large complex catalyses peptide bond formation, with \ac{rRNA} forming the catalytic core, while ribosomal proteins provide structural support and regulatory functionality \citep{Wahl2009}.
@@ -46,81 +45,74 @@ In bacteria, several classes of \acp{RNP} mediate post-transcriptional regulatio
 \Acp{crRNA} guide Cas nucleases to complementary DNA or RNA targets, enabling sequence-specific nucleic acid cleavage \citep{Barrangou2007}.
 This mechanism has famously been repurposed as a gene-editing tool \citep{Jinek2012}.
 
-BRIDGE RNAS!!!
+\citet{Durrant2024} recently discovered Bridge RNA, which forms a complex with a transposase.
+This system was found in a family of minimal insertion sequences, IS110, which expresses a transposase that is essential for the mobility of the insertion sequence.
+Prior to experimental validation, the discovery was done by a computational screen for transposase homology and subsequent computational identification of conserved RNA structured elements directly flanking the transposase genes.
+Bridge RNA systems are further shown to be reprogrammable to offer targeted control of transposase activity, enabling precise genome editing through site-specific insertion, excision and inversion.
+This is a major finding in the field of gene editing, adding to the library of tools available for precise genome manipulation.
 
-\subsection*{Riboswitches}
+\subsection{Cis-regulatory RNAs}
 
 %Including light sensitive/related, give some importance of these
 
-Riboswitches are structured RNA domains that regulate gene expression in response to some stimuli, often the presence of a metabolite \citep{Breaker2023}.
+Cis-regulatory RNAs are structured RNA elements that regulate the expression of genes located on the same transcript.
+Riboswitches are a well-studied class of cis-regulatory RNAs that modulate gene expression in response to some stimuli, often metabolites \citep{Breaker2023}.
 Although seemingly less abundant than protein factors that perform similar functions, riboswitches are recognized as important regulatory elements across all domains of life.
 They are typically embedded within messenger RNAs and control gene expression through ligand-induced conformational changes.
 
-% get rid of this or fix it
-Riboswitch mechanisms vary widely.
-Figure~\ref{fig:riboswitch-mechanism} illustrates several experimentally validated regulatory strategies \citep{Kavita2023}.
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{figures/introduction/riboswitch-mechanism.png}
-%     \caption[Typical riboswitch regulatory mechanisms]{\textbf{Typical riboswitch regulatory mechanisms.} 
-%     Riboswitches control gene expression through ligand-induced conformational changes that affect either transcription or translation.
-%     Ligands ("L") bind aptamers resulting in 
-%     \textbf{Transcriptional control (top):} Riboswitches can either promote an early termination when ligand-bound (left) or prevent termination (right) allowing transcription through the ORF. 
-%     \textbf{Translational control (bottom):} Riboswitches can either make the ribosome binding site less accessible (left) or more accessible (right) when ligand-bound.
-%     ORF = open reading frame; RBS = ribosome binding site. 
-%     Created in  https://BioRender.com}
-%     \label{fig:riboswitch-mechanism}
-% \end{figure}
-
-Transcriptional riboswitches control formation of Rho-independent terminators—intrinsic termination structures consisting of a hairpin followed by a uridine-rich tract. 
+Transcriptional riboswitches control formation of Rho-independent terminators — intrinsic termination structures consisting of a hairpin followed by a uridine-rich tract. 
 Depending on the riboswitch, ligand binding may promote terminator formation or stabilize an antiterminator structure, enabling transcriptional read-through.
 Similarly, translational riboswitches can sequester or expose the ribosome-binding site in response to ligand binding \citep{Breaker2023}.
 
 % maybe incorporate some of the below into this section
-\section{RNA Structure Determines Function}
+\subsection{RNA structure determines function}
 
-MAKE IT CLEAR THAT STRUCTURE IS CONSERVED OVER SEQUENCE IN A LOT, BUT NOT ALL CASES, BUT HERE WE ARE FOCUSING ON STRUCTURED RNAS.
-INTRODUCE THE IDEA OF COVARIATION AND HOW IT IS USED TO DETECT FUNCTIONAL RNAs.
-
-RNA molecules, much like the polypeptides that make up proteins, fold into complex structures that enable diverse functions \citep{Wang2021}.
+RNA molecules, much like proteins, fold into complex structures that enable diverse functions \citep{Wang2021}.
 They typically exist as single-stranded molecules, which can fold back on themselves through intramolecular base pairing to form secondary and tertiary structures.
-
 RNA secondary structure arises from Watson-Crick base pairing (A-U and G-C) and wobble pairing between nucleotides within the same strand \citep{Tinoco1999}. 
+Figure ~\ref{fig:rna-structure} illustrates the diversity of RNA secondary structure elements, which enable a variety of functions, enabling interactions with proteins, other RNAs, and small molecules \citep{Marklund2023}.
 Common secondary structures include hairpins, consisting of a base-paired stem capped by an unpaired loop; internal loops and bulges, made up of unpaired nucleotides within a helical stem; junctions where three or more helical stems converge; and pseudoknots, where nucleotides in a loop pair with regions outside that loop \citep{Staple2005}.
 
-Beyond secondary structure, RNAs fold into three-dimensional structures through long range interactions \citep{Batey2004}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/introduction/secondarystructure.pdf}
+    \caption[The diversity of RNA secondary structure elements]{\textbf{The diversity of RNA secondary structure elements.} 
+    RNA molecules fold into complex structures through intramolecular base pairing, forming secondary structures such as hairpins, internal loops, bulges, junctions, and pseudoknots.
+    \textbf{a)}, Common secondary structure elements include hairpins, internal loops, bulges, and single-stranded regions.
+    \textbf{b)}, Examples of more complex secondary structure elements: kissing loops, tetraloops, pseudoknots, junctions, kink turns and G-quadruplexes.
+    Also shown are 3D structures of specific examples of these motifs from the Protein Data Bank.
+    Red nucleotides indicate the distinct structural motifs.
+    Modified from \citet{Marklund2023}.}
+    \label{fig:rna-structure}
+\end{figure}
+
+Beyond secondary structure, RNAs fold into more complex tertiary structures through long range interactions \citep{Batey1999}.
 These include base triplets, ribose zippers, A-minor motifs, and tetraloop-receptor interactions, which stabilize compact RNA folds.
 
+Although there are many examples of structured functional RNAs, it is important to note there are many cases where sequence alone provides function \citep{Fire1998, Backofen2014}.
 The relationship between RNA structure and function is exemplified by riboswitches, a class of regulatory RNAs.
 The aptamer domain folds into a specific three-dimensional pocket that selectively binds a target ligand through a combination of electrostatic interactions and shape complementarity \citep{Kavita2023}.
 Ligand binding stabilizes one conformational state over another, thereby modulating transcription termination or initiation.
 This allosteric mechanism, whereby binding at an aptamer site affects a distal functional region, demonstrates how RNA structure enables regulatory function.
 
-\section{The Twilight Zone of RNA Homology}
-
-RNA homology searches are complicated by the fact that RNA structure is often more conserved than sequence, particularly in functional RNAs maybe cite \citep{Kavita2023}.
-
-\section{The Twilight Zone of Protein Homology}
-
-Much lower... more reliable for identifying deeper homology than RNA
-
-\section{Current Approaches to Functional RNA Discovery}
+\section{Current approaches to functional RNA discovery}
 
 % Don't focus so much on riboswitches, we are more focused on RNA:protien complexes 
-It is predicted that a large number of riboswitches remain undiscovered, potentially on the order of thousands \citep{Kavita2023}.
-Ronald Breaker and colleagues have pioneered systematic riboswitch and ribozyme discovery, identifying over 55 distinct riboswitch classes to date \citep{Breaker2022}.
-Other major RNA-related discoveries, such as ribosomes and \ac{CRISPR}-Cas systems, occurred through more exploratory research approaches \citep{Bruck2025}.
+It is predicted that a large number of functional RNAs remain undiscovered, potentially on the order of thousands \citep{Kavita2023}.
+Breaker and colleagues have pioneered systematic riboswitch and ribozyme discovery, identifying over 55 distinct riboswitch classes as of 2022 \citep{Breaker2022}. % drop this or find up to date number of riboswitches discovered.
+Other major RNA-related discoveries, such as ribosomes, \ac{CRISPR}-Cas systems, and Bridge RNA, also occurred through exploratory research approaches \citep{Bruck2025}.
 
-\subsection*{Computational Approaches}
+\subsection{Computational discovery approaches}
 % move some of this to the end of the intro perhaps when leading up to methods
 
 Bioinformatic sequence-based searches using tools like \ac{BLAST} identify homologous sequences, but many functional RNAs have divergent sequences detectable only through structural conservation.
-Structure based searches have proven successful, like the bioinformatic search for twister ribozymes by \citet{Roth2014} discovering roughly 2,700 ribozymes.
+Structure based searches have proven successful, like the bioinformatic search for twister ribozymes by \citet{Roth2014} discovering roughly 2,700 ribozyme candidates.
 These techniques search on sequence and secondary structure patterns, but require existing alignments and structure models, limiting their utility for discovering entirely novel RNA classes.
 
-RNA structure prediction remains a challenging problem, particularly when given a single sequence and no homology structures are known, as would be the case with a genome wide search for novel RNA structures in a single species.
+RNA structure prediction remains a challenging problem, particularly when given a single sequence and no homology structures are known, as would be the case with a genome wide search for novel RNA structures in a single species \citep{Backofen2014}.
 Comparative approaches using multiple homologous sequences provide greater predictive power for RNA structure inference \citep{Kagaya2026}.
+Figure ~\ref{fig:covariation} illustrates the idea of covariation and how it can be used to identify conserved RNA structures across related species.
+Where pairs of nucleotides covary across species, i.e., they mutate together to preserve base pairing, this provides evidence of conserved RNA structure.
 
 \begin{figure}[H]
     \centering
@@ -132,44 +124,66 @@ Comparative approaches using multiple homologous sequences provide greater predi
     \label{fig:covariation}
 \end{figure}
 
-Comparative genomics leverages evolutionary conservation of RNA structures across related species, enabling the identification of conserved structural features.
-These conserved features are termed RNA motifs, regions showing evidence of selective constraint on structure, indicating potential functional importance. 
-Such motifs may represent riboswitches, ribozymes, or other classes of functional RNAs.
-
-Zasha Weinberg's lab has had notable successes with their tool CMfinder, \citet{Yao2006}, which identifies conserved RNA secondary structures using a comparative genomics approach.
-The \citet{Sack2025} paper, also from the Weinberg lab, recently identified 16 new structured RNA classes in plants using a CMfinder-based bioinformatic screen.
-This study focused on structured RNAs involved in alternative splicing.
-
+The CMFinder tool \citet{Yao2006}, investigates covariance across multiple sequences, enabling the identification of conserved structural features.
+These conserved regions show evidence of selective constraint on structure, indicating potential functional importance. 
+Such RNA elements may represent riboswitches, ribozymes, or other classes of functional RNAs.
+The Weinberg lab has had several notable successes with their tool, CMfinder, \citep{Baker2012,Roth2014,Weinberg2015,Baker2012}.
 \citet{Roth2014} also employed CMfinder to identify a new class of self cleaving ribozymes, the twister ribozyme, which has since been found to be widespread in nature.
 In that paper hammerhead and twister ribozymes were observed to commonly reside near each other and to certain protein coding genes, although noting it still a biological mystery. 
 \citet{Weinberg2015} followed up on this observation with a screening of sequences nearby known ribozyme and ribozyme associated protein domain coding regions.
 This approach successfully identified additional ribozyme classes including pistol and hatchet.
+The 2025 paper, \citet{Sack2025}, recently identified 16 new structured RNA classes in plants using a CMfinder-based bioinformatic screen.
+This study focused on structured RNAs involved in alternative splicing.
 
-\subsection*{Alternate Approaches}
+\subsection{Experimental approaches to discovery and generation of functional RNAs}
 % this section could be shortened or removed, kind of an aside to the main focus of the project
 
 Transcriptome mapping approaches have proven successful for unbiased riboswitch discovery. 
-Term-seq maps RNA 3' termini genome-wide to identify premature transcription termination sites characteristic of riboswitches and attenuators \citep{Dar2016}. This approach discovered numerous antibiotic-responsive riboswitches controlling resistance genes in bacterial pathogens and the human microbiome. 
+Term-seq maps RNA 3' termini genome-wide to identify premature transcription termination sites characteristic of riboswitches and attenuators \citep{Dar2016}. 
 This approach has uncovered numerous antibiotic-responsive riboswitches controlling resistance genes in bacterial pathogens and within the human microbiome.
 RNA structure probing methods characterize secondary structures, tertiary interactions, and dynamic conformational changes. 
 \ac{SHAPE-seq} chemically modifies unpaired nucleotides, enabling genome-wide structure mapping \citep{Lucks2011}. 
 This approach can identify structured regions throughout transcriptomes, revealing RNA switches, ribozymes, and protein-binding sites.
 \ac{DMS-MaPseq} extends this approach to structural probing \emph{in vivo} \citep{Zubradt2017}.
 A variety of methods exist for studying protein-RNA interactions from both protein- and RNA-centric approaches \citep{Yi2025}.
-
-While powerful for validation and mechanistic characterization, experimental approaches are labour-intensive, may miss RNAs with unknown functions, and are difficult to scale across many organisms.
+While powerful for validation and mechanistic characterization, computational approaches have been successful in extending the scope of RNA research \citep{Backofen2014}.
 
 % same here honestly, again a bit of an aside, but relavent perhaps to explaining the significance of the project
 
-\ac{SELEX} generates novel functional RNAs by applying selective pressure to a library of random sequences.
+\ac{SELEX} is a technique to generate novel functional RNAs by applying selective pressure to a library of random sequences.
 This technique was used in the generation of the photoriboswitch, Werewolf-1 \citep{Rotstan2020}.
 Generation of synthetic functional RNAs by computational design has also been reported, with tools like RfamGen and RhoDesign \citep{Sumi2024}.
 
 Many RNA discoveries, including \ac{CRISPR}-Cas systems, \ac{mRNA} vaccine strategies and many catalytic RNAs were however discovered in nature, not designed \emph{de novo} \citep{Micura2020,Barrangou2007}.
 Beyond biotechnology, fundamental understanding of natural RNA-based systems has value, for example the discovery of flouride sensing riboswitches in bacteria \citep{}
 
-\section{A Protein-First Approach to RNA Discovery}
+\section{The Twilight Zone of RNA and protein homology}
+
+Homology is being used here as a catch all term for sequence and structural similarity due to shared ancestry.
+Orthology, parology and xenology are all included in this broad definition of homology.
+Othologs are are genes which have diverged through speciation events \citep{Jensen2001}.
+Conversly, paralogs are genes that have diverged through duplication events within a species \citep{Jensen2001}.
+Xenology is a term used to describe genes that have been transferred between species through horizontal gene transfer \citep{Jensen2001}.
+Homoloy is often infered from sequences or structures share more similarity than would be expected by chance \citep{Pearson2013}.
+Homolgous genes have shared ancestry and potentially shared function and evolutionary pressure, but the processes that have led to their divergence can make it difficult to detect homology through sequence similarity alone.
+
+The Twilight Zone of homology detection refers to the range of sequence similarity where it is difficult to confidently infer homology based on sequence alone \citep{Rost1999}.
+The Twilight Zone of protein homology was estimated by \citet{Rost1999} at 20-35\% sequence identity, where the probability of correctly identifying homologs drops significantly.
+This means that even if two homologous proteins can be identified as such until they have diverged to the point where their sequences are less than 20-35\% identical.
+
+RNA homology detection is one way of identifying functional RNAs, as conservation across homology can detect similar selective pressures and functionality.
+Further, with homologous sequences found across multiple species, comparative approaches can be used to identify conserved RNA structures \citep{Backofen2014}.
+RNA homology searches are complicated by the fact that RNA structure is often more conserved than sequence .
+The Twilight Zone of RNA homology detection is less well defined than for proteins, but was estimated by \citet{McGimpsey2019} to be around 35-50\% sequence identity.
+This means it is more difficult to detect deep homology in RNA sequences than in protein sequences.
+
+\section{A protein-first approach to RNA discovery}
 % introcuce this more as a protein first approach rather than gene family
+
+The approach being proposed here is a protein-first approach to RNA discovery, leveraging the relative ease of protein homology detection to identify conserved protein domains and deeper evolutionary relationships, and then searching for conserved RNA structures in neighbouring non-coding regions (Figure~\ref{fig:protein-vs-rna-first-pipeline}).
+Beyond the successes of gene family-targeted searches with CMfinder, there is precedent for riboswitches being encoded upstream of certain gene families \citep{Micura2020, Kavita2023}.
+This approach also provides a less computationally intensive alternative to genome-wide screens, allowing for wider searches across more species.
+It harnesses the power of evolutionary conservation and leverages the biological assumption that functionally related genes (i.e. with domain homology) may share regulatory mechanisms.
 
 \begin{figure}[H]
     \centering
@@ -180,86 +194,117 @@ Beyond biotechnology, fundamental understanding of natural RNA-based systems has
     \label{fig:protein-vs-rna-first-pipeline}
 \end{figure}
 
-Beyond the successes of gene family-targeted searches with CMfinder, there is precedent for riboswitches being encoded upstream of certain gene families \citep{Micura2020, Kavita2023}.
-This approach also provides a less computationally intensive alternative to genome-wide screens, allowing for wider searches across more species.
-Harnessing the power of evolutionary conservation and leveraging the biological assumption that functionally related genes (i.e. with domain homology) may share regulatory mechanisms.
-
-Due to its potential importance in biotechnology this project will be screening for conserved RNA structures located near light-sensing gene families.
+Because of the potential importance of light-sensing systems in biotechnology, this project screened for conserved RNA structures located near light-sensing gene families.
 Light-sensing systems in bacteria often involve complex regulatory networks, and RNA-based mechanisms have been shown to play roles in light acclimation responses in cyanobacteria \citep{Hihara2015}.
 
-A recent study by a group in Copenhagen, \citet{Geissler2026}, describes a bioinformatic screen similar to the one undertaken here.
-In that work orthologous cyanobacteria genes involved in photosynthetic pathways were targeted for nearby conserved RNA structure discovery using CMfinder.
-Approximately 400 novel conserved RNA structures were identified.
+A recently published study by a group in Copenhagen, \citet{Geissler2026}, describes a bioinformatic screen similar to the one undertaken here.
+In that work 931 orthologous cyanobacteria genes involved in various pathways were targeted for nearby conserved RNA structure discovery using CMfinder.
+Approximately 400 novel conserved RNA structures were identified, some of which were in intergenic regions up and downstream of light-sensing and photosynthetic genes.
+This work demonstrates the potential for searching for conserved RNA structures near light-sensing gene families, and the potential for discovering novel regulatory elements in these systems.
+The approach taken in that study was, however, more of an RNA-first discovery pipeline where large sets of non-coding regions from a relatively small number of genomes (202) were screened for conserved RNA structures.
+Filtering for GC content and other non-structural features was used to reduce the number of candidate structures.
 
-Whats being improved here???
+With a protein-first approach, the search spaces can be expanded to include a much larger number of genomes, and the search can be targeted to specific protein domains of interest.
+With a larger search space and a more targeted approach, the power of a covariance analysis is expected to increase, as power depends on the number and phylogenetic diversity of the sequences analysed.
+More diverse sequences give more opportunities to observe covarying positions, which should improve the statistical significance of the results and the chance of detecting biologically relevant signals.
 
-\section{Bacterial Genomes as a Search Space}
+\subsection{A search target: Blue Light sensor Using \ac{FAD}}
+
+The \ac{BLUF} domain is a light-sensing protein domain that binds flavin adenine dinucleotide (FAD) and undergoes a conformational change upon blue light absorption \citep{Kita2005,Gomelsky2002}.
+This conformational change can modulate the activity of associated effector domains, enabling light-dependent regulation.
+\ac{BLUF} was chosen as a proof-of-concept search target for its potential to be involved in an \ac{RNP} 'light switch' complex.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/introduction/BLUFcrystalpdbTll0078.png}
+    \caption[\ac{BLUF} structure]{\textbf{\ac{BLUF} structure.} 
+    Crystal structure of the \ac{BLUF} domain from \emph{Thermosynechococcus elongatus} BP-1 \citep{Kita2005}.
+    Ten Tll0078 monomers with N-terminal \ac{BLUF} domains and C-terminal domains form two pentameric rings.}
+    \label{fig:bluf-structure}
+\end{figure}
+
+Figure~\ref{fig:bluf-structure} shows the crystal structure of the \ac{BLUF} domain from \emph{Thermosynechococcus elongatus} BP-1, highlighting its characteristic fold.
+The domain is composed of a five-stranded $\beta$-sheet flanked by two $\alpha$-helices, forming a compact structure that binds FAD.
+Three conserved residues, Asn31, Asn32 and Gln50, are thought to be critical for flavin binding and light-induced conformational changes \citep{Kita2005}.
+
+\subsection{Bacterial genomes as a search space}
 
 Riboswitches have been most extensively discovered and experimentally validated in bacteria and seem to rarely have homologs in eukaryotes \citep{Kavita2023}.
 This makes bacteria a reasonable domain for riboswitch discovery efforts.
 
-Make a point about other functional RNAs being more widespread in bacteria, specifically RNA:protein interactions.
+Beyond riboswitches, many other functional RNAs in bacteria act through protein partners.
+Small RNAs and RNA-binding proteins such as Hfq and CsrA form extensive post-transcriptional regulatory networks \citep{Romeo1998, Vogel2006, Holmqvist2018}, and the RNA component of ribonuclease P is a catalytic RNA-protein complex conserved across bacteria \citep{Guerrier-Takada1983}.
+CRISPR-Cas systems, in which guide RNAs direct protein effectors to their targets, are also widespread in bacterial genomes \citep{Barrangou2007, Jinek2012}, and new RNA-guided systems continue to be described \citep{Bruck2025}.
+This provides rationale for searching for conserved RNA structured elements in bacterial genomes.
 
 Extensive phylogenetic diversity is available among sequenced bacterial genomes.
 As of April 2026, over 870,000 bacterial genomes spanning 180,000 bacterial species clusters have been sequenced and organised in databases such as \ac{GTDB} \citep{GTDB2026}.
 This represents vast evolutionary distances, bacteria diverged over 3 billion years ago, providing the deep phylogenies necessary for detecting conserved structures through covariation analysis.
 
-Bacterial regulatory mechanisms are generally simpler than eukaryotic systems, with less complex post-transcriptional processing and more direct coupling between transcription and translation. 
-
-MAYbe INCLUDE FIGURE SHOWING INCREASING NUMBER OF BACTERIAL GENOMES SEQUENCED OVER TIME, AND THE INCREASING NUMBER OF SPECIES REPRESENTED. NOW IS A GOOD TIME TO BE DOING THIS
-
-This simplifies both computational predictions and experimental validation.
-
-\section{Bioinformatic Approach}
-Walk through the bioinformatic approach taken here, the databases used, the tools used, and the rationale for each step.
-
-\section{Blue Light Using Flavin Domain}
-
-\ac{BLUF} 
-
-ligh switch!!!
+Though bacterial regulation is not simple \citep{Backofen2014, Breaker2018, Gottesman2011}, unlike eukaryotes, bacterial mRNAs typically lack capping, splicing, and nuclear export \citep{Moore2009, Wahl2009}, and transcription and translation are often coupled \citep{Kohler2017, Irastortza-Olaziregi2021}.
+This may facilitate the identification of conserved RNA elements from genomic DNA sequences, as fewer processing steps (e.g. splicing) complicate the relationship between genomic sequence and mature transcript.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/introduction/BLUFcrystalpdbTll0078.png}
-    \caption[\ac{BLUF} structure]{\textbf{\ac{BLUF} structure.} }
-    \label{fig:bluf-structure}
+    \includegraphics[width=0.8\textwidth]{figures/introduction/genbank_wgs_growth.pdf}
+    \caption[The number of bacterial whole genomes sequenced since 2000]{\textbf{The number of bacterial whole genomes sequenced since 2000.} 
+    The number of bacterial whole genomes available from GenBank releases over time.
+    WGS = whole genome sequencing, shown on a $\log_{10}$ scale.
+    Graphed from data publicly available from \url{https://www.ncbi.nlm.nih.gov/genbank/statistics/}.}
+    \label{fig:bacterial-genomes-sequenced-over-time}
 \end{figure}
 
-% Project aims (should be about half a page)
-\section{Project Aims and Hypothesis}
+Figure~\ref{fig:bacterial-genomes-sequenced-over-time} illustrates the rapid increase in the number of bacterial genomes sequenced over the past two decades and available on \ac{NCBI}'s GenBank \citep{OLeary2024}, highlighting the growing availability of genomic data for comparative analyses.
+The set of available bacterial genomes for screening is constantly expanding, providing an ever-increasing resource for the discovery of conserved RNA elements.
 
-The overarching aim is to discover novel functional RNA motifs associated with bacterial light-sensing systems by leveraging comparative genomics. 
+\subsection{Bioinformatic approach}
+
+The right hand path of Figure ~\ref{fig:protein-vs-rna-first-pipeline} illustrates the protein-first approach to RNA discovery taken in this project.
+The general approach is to identify conserved protein domains, and then search for conserved RNA structures in neighbouring non-coding regions.
+The first step is to identify conserved protein domains of interest, such as \ac{BLUF}, across a wide range of bacterial genomes.
+Tools such as FASTA and BLAST can be used to identify homologous proteins by comparing sequences, while HMMER uses both sequence and structure information from probabilistic models to identify homologous protein domains \citep{Pearson2013}.
+\citet{Durrant2024} had success using HMMER in their protein-first approach, and this approach will be used here as well.
+Once these domains are identified, the genomic regions flanking these genes can be extracted and analyzed for conserved RNA structures using comparative genomics approaches.
+These include tools such as CMfinder, which identifies conserved RNA secondary structures using a comparative genomics approach \citep{Yao2006}.
+Alternatively, clustering and alignment tools (MAFTT and MMseqs2 \citep{Kallenborn2025, Katoh2013}) can be used to identify local sequence homology before searching for conserved RNA structures in these regions by covariance analysis.
+Several tools exist for covariance analysis, including R-scape, which uses statistical models to identify covarying base pairs (Figure ~\ref{fig:covariation}) in RNA alignments \citep{Rivas2017}.
+This second apprach was used in this project after initial attempts to use CMfinder were unsuccessful, and is described in more detail in the methods section.
+
+Probabilistic models of RNA structure and sequence can be built from identified structural element candidates, most commonly these are \ac{CM}s.
+\ac{CM}s are statistical models that capture both the sequence and structural features of RNA families, enabling sensitive searches for homologous sequences in genomic databases \citep{Nawrocki2013}.
+
+% Project aims (should be about half a page)
+\section{Project aims and hypothesis}
+
+The overarching aim is to discover novel structured RNA elements associated with bacterial light-sensing systems by leveraging comparative genomics. 
 Gene-family-targeted approaches offer a computationally tractable approach for identifying regulatory elements linked to specific biological pathways. 
 Light-sensing gene families are of particular interest due to their importance in environmental adaptation and their potential relevance to biotechnological applications. 
 Identifying conserved RNA structures associated with these genes may reveal previously uncharacterized regulatory mechanisms.
-
-The first aim of this project is therefore to identify evolutionarily conserved RNA structural elements located near light-sensing gene families across diverse bacterial lineages. 
+The first aim of this project is therefore to screen for conserved RNA structural elements located near the \ac{BLUF} domain across diverse bacterial genomes. 
 By examining intergenic and transcript regions associated with these genes, the project aims to predict conserved RNA secondary structures using comparative genomics approaches that identify covariation patterns indicative of selective constraint.
-These may represent riboswitches, ribozymes, or other regulatory elements. 
-
-The second aim is to develop a generalizable comparative genomics pipeline using modern tools, capable of systematically screening for conserved RNA structures linked to specific protein domain families. 
+The second aim is to develop a protein-first structured RNA discovery pipeline, capable of systematically screening for conserved RNA structures. 
 This pipeline is intended to be reusable and adaptable for future studies, targeting additional gene families or biological pathways. 
-
-Together, these aims will contribute both new candidate RNA motifs and a methodological platform for search for structured RNAs in nature.
+Together, these aims will contribute both new candidate structured RNA elements and a methodological platform for search for structured RNAs in nature.
 
 % rewrite aims
 
-Further this work aims to fill a gap in the field for a reliable statistical method for measuring relatedness between RNA elements, which is important for understanding the evolutionary relationships and structural similarities among RNA motifs.
+Further, this work aims to fill a gap in the field for a reliable statistical method for measuring relatedness between RNA elements, which is important for understanding the evolutionary relationships and structural similarities among RNA motifs.
+This has remained a challenge in the field despite the development of several methods for RNA structured element comparison \citep{Pratiwi2022,Eggenhofer2013}.
 
 % this is a terrible hypothesis, needs to be rewritten and testable.
-
 % Evolutionarily conserved structural motifs within transcripts associated with specific gene families represent functional regulatory elements maintained by natural selection.
 % These elements may employ diverse mechanisms, including ligand-dependent structural switching (riboswitches), catalytic self-cleavage (ribozymes), protein binding, or other structure-based regulatory strategies, to control gene expression.
-The central hypothesis of this work is that protein homology can be leveraged in the discovery of RNA homology in \ac{RNP} systems.
-
+The central hypothesis of this work is that protein homology can be leveraged in a discovery pipeline for identifying RNA homology in \ac{RNP} systems.
+This will be tested by recovery of a known structured RNA element.
+This relies on bioinformatic tools being able to identify conserved protein domains and then search for conserved RNA structures in neighbouring non-coding regions.
+Testing if any identified conserved RNA structures have any function or are involved in light sensing is beyond the scope of this project, but the discovery of novel conserved RNA structures will provide a foundation for future experimental validation and functional characterization.
 
 \section{Vision Mātauranga}
 
 This project uses publicly available genomic datasets. 
 If genomes from Aotearoa-associated or taonga species are included, appropriate consideration will be taken regarding data sovereignty and potential social and cultural outcomes. 
-The Ngāi Tahu Research Consultation Committee has been contacted for consultation regarding the larger, overarching project this honors project falls under.
+A Ngāi Tahu Research Consultation Committee application is in progress regarding the larger, overarching work this project falls under.
 
 The research in this project aligns most closely with the Vision Mātauranga theme of indigenous innovation, contributing computational tools with potential applications in biotechnology and plant science in Aotearoa New Zealand. 
-If this research leads to commercial outcomes, benifits of the research will be shared equitably.
-We remain open to collaboration with tanga te whenua.
+We remain open to collaboration and consultation with tāngata whenua.
+Should commercial opportunities arise as a result of this research, we will seek to ensure that benefits are shared equitably with iwi and other relevant stakeholders.

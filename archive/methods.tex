@@ -1,0 +1,544 @@
+\chapter{Methods}
+
+The following Methods chapter outlines: firstly the production of a positive-control set of known RNA elements and their associated protein domains.
+Secondly the discovery pipeline for identifying novel structured RNA elements associated with conserved protein domains, and thirdly a description of an iterative expansion approach to amplifying the identified candidate signal.
+The main computational discovery pipeline uses data curated from public datasets to screen for conserved structured RNA elements encoded near a conserved protein domain anchor.
+A positive control pipeline searches for conserved protein domains starting from a known RNA element anchor, acting to validate both the discovery pipeline and the premise of this project.
+A negative control set of membrane associated protein domains was also curated to validate the discovery pipeline and to provide a baseline for comparison of the results.
+Finally, a novel approach to clustering RNA covariance models was developed and applied to the candidate set of structured RNA elements identified by the discovery pipeline.
+Candidate RNAs were also assessed for possible interaction with their anchor protein using AlphaFold 3 predictions.
+An overview of the methods used in this study is provided in Figure \ref{fig:methodsoverview}.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/methods/overview.pdf}
+    \caption[Overview of methods]{\textbf{Overview of methods}
+    Simplified overview of the approach taken for \ac{RNP} candidate discovery. Numbered steps refer to the following subsections. }
+    \label{fig:methodsoverview}
+\end{figure}
+
+The discovery and positive control pipelines are written in Python 3.14.6 using Snakemake v.9.23.1, and are configurable and automated \citep{Molder2025}.
+Iterative expansion and covariance model clustering were developed in the Go programming language v.1.27.1 and are available as standalone tools, both of which are highly configurable and reusable.
+All code, software environment definitions and data used in this study are available in the supplementary materials (Appendix \ref{sec:code-and-data-availability}).
+
+\section{Database curation}
+
+% abstract steps from discovery and positive control pipeline, and describe the databases used and versions.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{figures/methods/section1_database_curation.pdf}
+%     \caption[Database curation]{\textbf{Database curation}
+%     An overview of the databases used and filtering and curation steps taken. 
+%     Numbered steps refer to the subsections below. 
+%     In bold are custom script and assets retrieved from online public databases.}
+%     \label{fig:databasecuration}
+% \end{figure}
+
+
+
+\subsection{Reference genomes}
+\label{subsec:reference-genomes}
+
+For all analyses, the \ac{GTDB} release 232 \citep{Parks2022} was used to select a diverse set of bacterial genomes for analysis. 
+The GTDB provides a standardised taxonomy, ensuring that the selected genomes are representative of the bacterial domain. 
+Python package \ac{ETE} v.3.1.3 \citep{huertacepas2016} was used for phylogenetic analysis and filtering using the \ac{GTDB} phylogenetic tree.
+Further filtering was performed to select high-quality, complete genomes (completeness $>$ 99.9\%, contamination $<$ 1\%), ensuring the selected reference genomes are suitable for downstream analysis.
+Completeness and contamination metrics were provided by CheckM2 \citep{Chklovski2023}, available in the \ac{GTDB} release.
+
+Only genomes with genomic sequence, protein sequence and annotation files available were retrieved from the \ac{NCBI} GenBank database release 265.0 \citep{OLeary2024}.
+Full lists of genomes used in this study for particular experiments are available in the supplementary materials (Appendix \ref{sec:code-and-data-availability}).
+
+\subsection{Reference protein domain profiles}
+\label{subsec:protein-hmm-retrieval}
+
+Protein domain \ac{HMM}s are probabilistic models that describe the conserved sequence of a family of protein domains.
+InterPro (version 35.0) entries guided the choice of protein domain model and relevant genome search space \citep{Blum2025}.
+Protein domain \ac{HMM} profiles were retrieved from the Pfam v.35.0 database \citep{Paysan-Fafosse2025}.
+These were used in the discovery pipeline to search for protein homology to anchor the search for conserved structured RNA elements.
+
+\subsection{Reference RNA covariance models}
+\label{subsec:covariance-models}
+
+Covariance models are probabilistic models that describe the conserved sequence and secondary structure of a family of RNA elements.
+RNA family covariance models were retrieved from the Rfam database (version 15.0) \citep{Ontiveros-Palacios2025}.
+These were used in the positive control pipeline to identify known RNA elements in the reference genome set, and to extract flanking coding sequences to identify associated protein domains.
+These were used in positive control experiments to validate the pipeline and to identify known RNA families among the candidates identified.
+
+Additionally, covariance models and clan information available from the Rfam database (version 15.0) \citep{Ontiveros-Palacios2025} were used to validate the clustering method developed in this study.
+Seed sequences (curated members of each family, used to build the alignments from which the family models are built) were also retrieved.
+
+% -------- rna -> protein ------------
+
+\section{Positive control preparation}
+\label{sec:poscontrol-pipeline}
+
+The positive control pipeline was developed to validate the association between known cis-regulatory RNA elements, the \ac{FMN}, \ac{SAM} and fluoride riboswitches, and \ac{CRISPR}-Direct Repeat 42, to their associated protein domains.
+This was to validate the premise of this study, that conserved structured RNA elements are associated with conserved protein domains, and to provide a set of validated examples to test the discovery pipeline.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/methods/section2_positive_control.pdf}
+    \caption[Positive control preparation] {\textbf{Positive control preparation (known RNA family $\rightarrow$ recovered protein signal).}
+    Starting from Rfam covariance models (\S\ref{subsec:covariance-models}) and genomes containing known family members (\S\ref{subsec:reference-genomes}), the pipeline locates each known element with cmsearch, extracts
+    the flanking coding sequences, and clusters and aligns the encoded proteins. 
+    Coding sequences within 1000\,nt of each hit were extracted. 
+    Proteins were clustered with MMseqs2 (sensitivity 7.5, minimum sequence identity 0.25, coverage $\geq 0.2$), and clusters with fewer than 5 members were discarded.
+    Italic labels show the data passed between steps. A hidden Markov model is built and calibrated for each cluster (double border, output) and can optionally feed the discovery pipeline as the protein input. 
+    Clusters are also analysed for presence/absence and phylogenetic spread across the tree, and searched against InterPro.
+    Hits were called using the Rfam per-family score thresholds and covariance models.}
+    \label{fig:poscontrol}
+\end{figure}
+
+Pipeline inputs are Rfam covariance models and annotated seed sequences, as described in Section~\ref{subsec:covariance-models}.
+A custom script accessing Entrez via the Biopython v.1.87 Python library searches for genomes containing these sequences \citep{OLeary2024}.
+A genome set is then constructed from \ac{GTDB} reference genomes and downloaded from GenBank (Section~\ref{subsec:reference-genomes}).
+All inputs from runs of this pipeline used in this study are available in Table \ref{tab:positive_controls_input}.
+
+\subsection{RNA structure search and extraction of flanking coding sequences}
+
+Members of the Rfam family were searched using the Rfam published search parameters, to revalidate hits and confirm the coordinate system in the reference genomes (Infernal v.1.1.5 \emph{cmsearch}).
+The output of this step is a list of genomic coordinates for each hit, which is used to extract the flanking coding sequences.
+
+Coding sequences surrounding the RNA element locus were extracted from the genome, within a 1000-nucleotide region of the element boundaries.
+This was done to identify protein domains that are encoded in close proximity to the RNA element, which may indicate a functional relationship between the two.
+The approach is illustrated in Figure \ref{fig:flankingcds}.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/methods/flanking_cds_fig.pdf}
+    \caption[Flanking coding sequence extraction]{\textbf{Flanking coding sequence extraction.}
+    Annotated coding sequences surrounding the RNA element of interest are extracted from genomes within a 1000 nucleotide region.
+    Shown in red is the RNA element of interest identified by cmsearch, in black is a coding sequence outside the 1000 nucleotide extraction region.
+    Indicated in green are the flanking coding sequences extracted for further analysis, labelled by upstream (+) or downstream (-) of the RNA element as well as the order (1 or 2 upstream or downstream). 
+    Strandedness of the surrounding coding sequences is also recorded (same or different to the cmsearch hit).}
+    \label{fig:flankingcds}
+\end{figure}
+
+Reference genome annotation files were used to identify the coding sequences flanking the RNA element of interest, using coordinates from the RNA structure search output by a custom script.
+Protein sequences of these identified coding sequences were then extracted from the genome and used for downstream clustering and alignment.
+
+\subsection{Clustering and aligning protein sequences}
+\label{sec:positive_control_hmm}
+
+Protein homology was assessed by clustering the extracted protein sequences.
+Protein sequences were clustered using MMseqs2 v.14.7.0 \citep{Kallenborn2025}.
+The clustering was performed with a sensitivity of 7.5, a minimum sequence identity of 0.25, and a minimum coverage of 0.2.
+The sensitivity value controls the permissiveness of the prefiltering stage, before the alignments are performed; 7.5 is reasonably high and was chosen to ensure that more divergent homologs were captured.
+The minimum sequence identity and minimum coverage values were chosen similarly to allow inclusion of more divergent sequences.
+Clusters with fewer than 5 members were discarded to ensure that only clusters with sufficient representation were retained for further analysis.
+
+A \ac{MSA} was built from the cluster protein sequences (MAFFT v.7.525) \citep{Katoh2013}.
+This defines positional homology between the sequences, indicating which amino acids are more likely to appear at each position.
+This identifies conserved sequence features and provides a basis for building a probabilistic model.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/methods/alignmentlogo.pdf}
+  \caption[Alignment and profile logo]{\textbf{Alignment and profile logo of the multiple sequence alignment.}
+  A section of a multiple sequence alignment from the most prevalent cluster from the \ac{FMN} riboswitch flanks (Cluster 204) is visualised with a resulting profile logo.
+  A grid is shown to indicate the position of each amino acid in the alignment (from a selection of 8 cluster members), and the amino acids are coloured by their chemical properties.
+  Below, a profile logo is shown for the alignment section across all sequences, where the height of each letter indicates the relative frequency of that amino acid at that position in the alignment.
+  Amino acid positions are shown on the x axis.
+  Bits on the y axis are a $\log_2$ ratio of the observed frequency of each amino acid at that position against a background frequency.}
+  \label{fig:alignmentlogo}
+\end{figure}
+
+Probabilistic models, \ac{HMM}s, were built based on the \ac{MSA} of each cluster.
+Figure \ref{fig:alignmentlogo} shows a section of the \ac{MSA} of the most prevalent cluster from the \ac{FMN} riboswitch flanks, and the corresponding profile logo.
+For each position in the alignment, the profile logo shows the likelihood of each amino acid at that position (bits).
+Across a full alignment the profile describes, probabilistically, what a sequence of this cluster looks like.
+This was done to capture the sequence diversity of each cluster, and to allow for sensitive searches for homologous sequences in the discovery pipeline.
+HMMER v.3.4 \emph{hmmbuild} and \emph{hmmcalibrate} were used to build and calibrate the \ac{HMM}s.
+
+\subsection{Analysis of positive control pipeline outputs}
+
+The pipeline reports the prevalence of cluster members across the reference genomes.
+The position of the protein domain relative to the RNA element is also reported, as well as the number of clusters identified and their sizes.
+
+\subsubsection{Taxonomic spread analyses with \ac{iTOL}}
+
+Monophyly or polyphyly of clusters was assessed by mapping the presence or absence of cluster members to the \ac{GTDB} phylogenetic tree.
+Additionally an annotation file was generated for each cluster, indicating the presence or absence of a cluster member in each genome.
+This was visualised on the \ac{iTOL} v.7 online tool \citep{Letunic2024} to assess the taxonomic spread of each cluster, and identify bacterial clades where the cluster is more abundant for positive control inputs of the discovery pipeline.
+The \ac{iTOL} trees for the protein clusters identified from the \ac{FMN} riboswitch and \ac{CRISPR}-Direct Repeat 42 are shown in Appendix Figures~\ref{fig:fmn-itol-tree} and \ref{fig:cdr-itol-tree} respectively.
+Figure \ref{fig:itol-tree} is an illustrative example.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/methods/rnafoundprot.pdf}
+  \caption[Protein cluster member tree]{\textbf{Protein cluster member tree.}
+  A simplified representation of a phylogenetic tree showing the presence of different protein cluster members across the reference genomes.
+  The tree is annotated with the presence of cluster, where each colour represents a different cluster.
+  The tree structure is based on the \ac{GTDB} phylogenetic tree narrowed down to representative genomes containing the RNA element of interest (as annotated by Rfam), and the presence of cluster members is based on the positive control pipeline output.
+  In gold is the most prevalent cluster, and indicated in red is a bacterial clade where the gold cluster is more abundant.}
+  \label{fig:itol-tree}
+\end{figure}
+
+
+\subsubsection{Identification with InterPro}
+
+Cluster sequences were submitted to the online InterProScan v.6 tool; the results indicated the protein hits and what the protein signal represents \citep{Blum2026}.
+Pfam v.35.0 entries were reported for the highest prevalence cluster, and the InterPro entry was used to identify the protein domain represented by the cluster.
+
+% -------- protein -> rna ------------
+
+\section{Computational discovery pipeline}
+\label{sec:computational-discovery-pipeline}
+
+A computational discovery pipeline was developed to identify novel structured RNA elements encoded near homologous protein domains.
+The pipeline is designed to be flexible and configurable, allowing for the use of different protein domains and reference genome sets.
+A positive control run was performed with the RibD C-terminal domain, found to be associated with the \ac{FMN} riboswitch (Section~\ref{sec:poscontrol-pipeline}) over a set of reference \emph{Microbacteriaceae} genomes.
+A negative control set was also curated and run through the pipeline, to validate the approach and provide a baseline for comparison of the results (Section~\ref{sec:negative-control}). 
+Finally the pipeline was run with the \ac{BLUF} domain over a set of reference \emph{Burkholderia} genomes, to identify novel structured RNA elements associated with this protein domain.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth, height=0.72\textheight, keepaspectratio]{figures/methods/section3_discovery_pipeline.pdf}
+    \caption[Computational discovery pipeline]{%
+    \textbf{Computational discovery pipeline (protein domain $\rightarrow$ candidate structured RNA).}
+    A protein domain profile, either curated (\S\ref{subsec:protein-hmm-retrieval}) or recovered from the
+    positive control (\S\ref{sec:positive_control_hmm}), is searched against the proteomes of the
+    target clade (\S\ref{subsec:reference-genomes}). Flanking regions of each hit are extracted, clustered,
+    aligned and tested for conserved secondary structure, and covariance models are built from
+    the structure-annotated alignments (double border, output). Candidate structured RNAs are
+    ranked in the final report, and the covariance models and flanking sequences pass to
+    iterative expansion (\S\ref{sec:iterative}). Italic labels show the data passed between
+    steps. Filtering thresholds are given in Table~\ref{tab:thresholds}.}
+    \label{fig:discovery}
+\end{figure}
+
+
+Inputs of the pipeline are a protein domain \ac{HMM} which serves as an anchor for the search, sourced as described in Section~\ref{subsec:protein-hmm-retrieval}, and a selection of reference genomes as a search space (Section~\ref{subsec:reference-genomes}).
+For validation the protein domain \ac{HMM} is one recovered from the positive control pipeline (Section~\ref{sec:poscontrol-pipeline}).
+All inputs from runs of this pipeline used in this study are available in Table \ref{tab:discovery_inputs}.
+
+\subsection{Protein domain search and flanking region extraction}
+\label{sec:protein-domain-search}
+
+Protein homology was searched using a probabilistic model (\ac{HMM}) against the protein sequences of the reference genomes (Section~\ref{subsec:reference-genomes}) (\emph{hmmsearch}, HMMER v3.4).
+To narrow the search for structured RNAs, the search was focused on regions flanking the identified protein domains.
+
+\label{sec:flanking}
+% describe approach, and filtering done
+The flanking regions are extracted from the reference genomes' genomic sequence based on the coordinates of the protein domain hits and the genomic annotations.
+Length filtering included only sequences $\geq 20$ nucleotides to allow for meaningful homology searches in subsequent clustering steps.
+Figure~\ref{fig:flankingregion} illustrates the flanking region extraction process, where the anchor coding sequence is identified by \emph{hmmsearch}, and the annotated up and downstream coding sequences of the same strand are used to define the flanking regions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/methods/extracted_flanks.pdf}
+    \caption[Flanking region extraction]{\textbf{Flanking region extraction.}
+    Non-coding flanking DNA sequence is extracted from genomes based on hmmer hits in protein sequence and published genome annotations.
+    Shown in red is the anchor coding sequence identified by hmmsearch, in black are annotated up and downstream coding sequences of the same strand.
+    Indicated in green are the flanking regions extracted for further analysis. }
+    \label{fig:flankingregion}
+\end{figure}
+
+\subsection{Sequence clustering and alignment}
+
+\label{subsec:clustering}
+
+Flanking sequences were clustered with a pairwise search based on sequence similarity with MMseqs2 v.16.747c6 \emph{search} \citep{Kallenborn2025}.
+Parameters are defined in Table~\ref{tab:thresholds}, and were chosen to balance sensitivity and specificity.
+Ideally clusters would contain sequences that are similar enough to be homologous, but not so similar that they are redundant and reduce the diversity which is required for covariance analysis.
+
+Clustered sequences were then trimmed to the local-alignment window it shares (directly or transitively) with an anchor sequence from the same cluster, using coordinates from a single all-vs-all search pass (MMseqs2 v.16.747c6).
+Window lengths were filtered to include those of length $\geq 15$ and $\leq 1000$ nucleotides.
+A padding of 15 nucleotides was kept on either side of this window, to avoid excluding important sequence information.
+These trimming and filtering steps were implemented to remove spurious sequence and to focus on the conserved region of the cluster, as some of these sequences were 1000s of nucleotides long.
+
+\label{subsec:rna-alignment}
+
+A \ac{MSA} was built from the trimmed cluster sequences (MAFFT v.7.525) \citep{Katoh2013}.
+This identifies conserved sequence features and provides a basis for secondary structure prediction and covariance model building.
+Alignments also describe how sequences are related to each other, which is important for downstream analyses such as covariance model building and iterative expansion.
+
+\subsection{Covariance analysis}
+\label{subsec:covariance-analysis}
+
+The CaCoFold algorithm of R-scape v.2.0.4 was used to predict conserved secondary structure and covarying base pairs in the \ac{MSA} \citep{Rivas2017}.
+This approach tests for covariation in the alignment, and predicts a consensus structure based on the covarying base pairs.
+It provides a structure-annotated \ac{MSA} in Stockholm format, which can be used to build a covariance model.
+Additionally, it provides a statistical test for covariation, giving an $E$-value for each predicted covarying base pair, statistical power for the covariation test, and an F-score for the overall alignment (the harmonic mean of sensitivity (SEN) and positive predictive value (PPV)).
+Secondary structure diagrams were generated with R2R v.1.0.6 \citep{Weinberg2011}.
+
+This covariance analysis step is the key step in the pipeline to identify any structured RNA elements.
+$E$-values for covarying base pairs are used to filter out spurious predictions, and the overall F-score is used to assess the quality of the alignment.
+
+\subsection{Covariance model construction and calibration}
+\label{sec:build_cm}
+
+Filtering was done on the CaCoFold structurally annotated alignments to include only those with at least one covarying pair where $E \le 0.05$.
+The Infernal v.1.1.5 \emph{cmbuild} tool was used to generate probabilistic models from identified CaCoFold generated structural alignments, using default parameters.
+Infernal v.1.1.5 \emph{cmcalibrate} assigns $E$-values to built models by fitting exponential tails to the hits of random sequences; this is required for statistical significance in searches using these models \citep{Nawrocki2013}.
+\acp{CM} with calibration runtimes $< 3$ hours and requiring $< 8$ \ac{GB} space on 4 \ac{CPU} cores were calibrated by fitting the null tail from the top 5\% of the histogram.
+Models exceding these limits were not calibrated and excluded from reporting.
+The random sequence set size was also limited to 0.8 \ac{MB}; this trades off $E$-value accuracy for quicker run times.
+
+\subsection{RNA-protein complex prediction}
+\label{sec:alphafold}
+
+Possible interactions between the \ac{BLUF}-associated candidate RNAs and \ac{BLUF} domain-containing proteins were explored with AlphaFold 3 \citep{Abramson2024}.
+For each candidate, a representative RNA sequence from the candidate alignment and a representative \ac{BLUF} domain-containing protein sequence from the genome neighbouring the RNA hit were used as input (Appendix Table~\ref{tab:rna_protein_3d_inputs}).
+Representative sequences were chosen randomly from the available set.
+The highest-confidence model from each prediction was used, as determined by the model's predicted confidence score.
+Confidence in the predicted interaction between the RNA and protein chains was assessed with the interface predicted TM-score (\ac{ipTM}).
+
+Two controls were run with the same procedure to give reference \ac{ipTM} values for interpreting the candidate scores.
+The negative control paired the \ac{BLUF} protein domain sequence with the \ac{FMN} riboswitch, which has no documented relationship to the \ac{BLUF} domain.
+The positive control paired the Bridge RNA with the IS621 transposase (Chain C), a pair shown by \citet{Durrant2024} to interact.
+
+\subsection{Negative control}
+\label{sec:negative-control}
+
+A negative control was used to assess how the discovery pipeline behaves when anchored on protein domains that are unlikely to be associated with a structured RNA element.
+A domain cannot be proven to lack an associated RNA, so this control provides an empirical baseline for the covariation signal expected from the pipeline in the absence of a known RNA element, rather than a true set of negatives.
+Four membrane-associated protein domains were chosen as negative control anchors, on the basis that structured RNAs are rare across genomes and that membrane-associated domains are unlikely to be involved in \ac{RNP} systems or cis-regulatory RNAs: the SecY protein translocase, the YgaP-like inner membrane protein, the YadA-like C-terminal outer membrane protein domain, and the bacterial flagellin N-terminal helical region.
+Domain \ac{HMM} profiles were retrieved as described in Section~\ref{subsec:protein-hmm-retrieval}.
+
+The search space was the genus \emph{Burkholderia}, chosen because all four domains are present in it, with genomes selected as described in Section~\ref{subsec:reference-genomes}.
+Each domain was screened with the discovery pipeline (Section~\ref{sec:computational-discovery-pipeline}).
+As in all runs of the pipeline, a candidate was retained if its CaCoFold alignment had at least one covarying pair with $E \le 0.05$.
+The number of covarying pairs and the R-scape F-score of each retained candidate were recorded and used as a baseline against which the positive control and \ac{BLUF} candidates were compared.
+
+\subsection{Checking for known RNA families and protein coding among candidates}
+
+Candidate clustered sequences were searched against the Rfam database (version 15.0) \citep{Ontiveros-Palacios2025} to check for known RNA families for the \ac{BLUF} domain discovery run and the negative control runs.
+Curated inclusion $E$-value thresholds were used to identify significant hits, and the number of hits and their associated families were reported.
+Additionally the candidate sequences (where Rfam F-measure $> 7$) were searched with the \ac{NCBI} BLASTX tool \citep{Altschul1997}.
+Significant hits were identified using an $E$-value threshold of $1\times 10^{-5}$, and the associated protein families were reported.
+This search was done to rule out misannotated protein coding sequences and intergenic regions that may have included coding sequences of the other strand.
+
+% ------- cm-iterative-expansion -----
+
+\section{Iterative expansion}
+\label{sec:iterative}
+
+% explain the idea that starting from 
+The idea of this iterative expansion approach is to use the probabilistic models (covariance models) built by the discovery pipeline to search for further homologous sequences in the flanking sequence set.
+This was done by an iterative approach described in Figure~\ref{fig:iterative-expansion} using the Infernal v.1.1.5 toolkit \citep{Nawrocki2013}.
+The probabilistic models describe sequence and structural information, and as such can be used to search for likely homologs.
+These models can be used to align those homologs, and new models can be built from the resulting alignments.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/methods/section4_iterative_expansion.pdf}
+    \caption[Iterative expansion of candidate covariance models]{%
+    \textbf{Iterative expansion of candidate covariance models.}
+    Each covariance model from \S\ref{sec:build_cm} is used to search the flanking sequences from \S\ref{sec:flanking} for deeper homology (4.1) with Infernal v1.1.5. 
+    Sequences with hits at an $E$-value $\leq 1\times10^{-5}$ are aligned back to the covariance model (4.2), and a new covariance model is built from the resulting multiple sequence alignment (4.3). 
+    The cycle repeats until $<$20 new homologous sequences are found. 
+    The dashed arrow marks exit from the loop after the final iteration.}
+    \label{fig:iterative-expansion}
+\end{figure}
+
+For all uses of this iterative expansion pipeline, a convergence cut-off of 20 new sequences identified in a round was used.
+This was to avoid long or infinite iterations.
+When this convergence limit was met a final covariance model and alignment were returned as output.
+
+\subsubsection{Search for deeper homology}
+
+The probabilistic models (covariance models) built by the discovery pipeline were used to search for further homologous sequences in the flanking sequence set (Infernal v.1.1.5 \emph{cmsearch}).
+An $E$-value threshold of $1\times 10^{-5}$ was applied to retain significant hits, with otherwise default parameters.
+Resulting identified sequences were aligned back to the covariance model.
+
+\subsubsection{Align back to covariance model}
+
+Infernal v.1.1.5 \emph{cmalign} was used to align identified homologous sequences back to the covariance model of interest \citep{Nawrocki2013}.
+This produces a structure-annotated \ac{MSA} of the identified sequences, which can be used to build a new covariance model, potentially adding new structural and sequence information.
+These alignments were generated with default parameters as structure-annotated, Stockholm-formatted \acp{MSA}.
+
+\subsubsection{Build new covariance model}
+
+Probabilistic models describing the structure and sequence of the RNA homology identified in the previous steps were built.
+Infernal v.1.1.5 \emph{cmbuild} and \emph{cmcalibrate} were used to build and calibrate new models from the expanded \acp{MSA} \citep{Nawrocki2013}.
+Structure was preserved between rounds with the \emph{cmbuild} \texttt{-{}-hand} option, and default \emph{cmcalibrate} parameters.
+
+\subsubsection{Output model and alignment analysis}
+
+The iterative expansion pipeline outputs are structure-annotated, Stockholm-formatted \acp{MSA} and calibrated covariance models.
+Reported also are the number of rounds of expansion, and the number of sequences identified in each round.
+Analysis of the output covariance models was done with the covariance model clustering pipeline (Section~\ref{sec:cm-simile}).
+
+To assess the accuracy of the discovery pipeline and the iterative expansion, from the \ac{FMN} riboswitch run a true positive alignment was constructed.
+This was done by running the Rfam consensus \ac{FMN} riboswitch covariance model through the iterative expansion pipeline using the identified flanking regions from the discovery pipeline run.
+The resulting alignment and model answered the question of what was the best possible alignment and model that could be built from the flanking regions.
+\ac{MSA}s resulting from positive control candidates run through the iterative expansion pipeline were analysed against the true positive alignment.
+Coverage identity was calculated using the coordinates of the alignment sequences, as the number of identical nucleotides between alignments divided by the total length of all alignment sequences.
+Both measures were computed from the sequence identifiers of each Stockholm alignment.
+
+For an alignment $Y$, let $K_Y$ be the set of sequence keys in $Y$, and for $k \in K_Y$ let $[s_Y(k), e_Y(k)]$ be the start and end positions of the aligned sequence $k$ (with $s \le e$).
+ 
+Let $J\bigl([s_1, e_1], [s_2, e_2]\bigr)$ denote the overlap of two intervals $[s_1, e_1]$ and $[s_2, e_2]$, the intersection over union of the positions they cover,
+The overlap identity of two alignments $A$ and $B$ is the mean of this overlap over the sequences they share,
+\begin{equation}
+  \label{eq:overlap-identity}
+  \mathrm{OI}(A, B) = \frac{1}{|S|} \sum_{k \in S}
+  J\bigl([s_A(k), e_A(k)],\, [s_B(k), e_B(k)]\bigr),
+\end{equation}
+where $S \subseteq K_A \cap K_B$ is the set of shared sequence keys for which both alignments have interval coordinates.
+$\mathrm{OI}$ lies between 0 and 1, with 1 meaning that every shared hit covers exactly the same positions in both alignments; it is reported as a percentage ($100\,\mathrm{OI}$).
+Sequences present in only one alignment do not contribute, and strand was not used when comparing intervals.
+An alignment compared with itself has $\mathrm{OI} = 1$, and two alignments that share sequences but whose hits never overlap have $\mathrm{OI} = 0$.
+
+All analysis was done with custom R v.4.6.1 scripts, available in the supplementary materials (Appendix~\ref{sec:code-and-data-availability}).
+
+% -------- cm-simile ------------
+
+\section{Covariance model clustering}
+\label{sec:cm-simile}
+
+An overview of the approaches taken to quantify relatedness between covariance models is provided in Figure~\ref{fig:cm-similarity-approaches}.
+These approaches were developed to quantify relatedness between covariance models, and to cluster them based on this relatedness.
+This is described in more detail in the following subsections.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/methods/section5_cmsimile_approaches.pdf}
+    \caption[Approaches for quantifying relatedness between covariance models]{%
+    \textbf{Three approaches for quantifying how related two covariance models are.}
+    Models $A$ and $B$ describe related RNA families within the space of all RNA sequences, $R$; sequences $a_i$ are members of $A$ and $b_i$ are members of $B$. 
+    Sequences are sampled from a model with \emph{cmemit}, scored against a model with \emph{cmsearch} (log-odds bit score), and null sequences are generated by dinucleotide shuffling.
+    \textbf{(1) Optimal sequence:} a genetic algorithm mutates candidate sequences, scores them against both $A$ and $B$, and selects the best, repeating over generations to approximate the sequence $s^{*}$ that joins the two families; the scores of $s^{*}$ against each model are reported.
+    \textbf{(2) Median score:} the median bit score of sequences emitted from $A$ and searched against $B$ ($m_{obs}$) is compared with the medians of $n$ bootstrap resamples of the pooled scores of dinucleotide-shuffled sequences ($m_j$), giving an empirical $p$-value, $p = (1 + \#\{m_j \geq m_{obs}\})/(n + 1)$.
+    \textbf{(3) Score distribution:} the full distribution of bit scores is compared with the null using a two-sample Kolmogorov--Smirnov test, where the statistic $D$ is the maximum difference between the observed and null cumulative distributions.}
+    \label{fig:cm-similarity-approaches}
+\end{figure}
+
+\subsubsection{Sequence scoring}
+\label{sec:sequence-scoring}
+
+Sequences were scored against each model with the Infernal v.1.1.5 tool \emph{cmsearch}, giving a log-odds bit score for each sequence against each model.
+
+\begin{equation} 
+S_{\mathrm{bit}}(x)
+=
+\log_2
+\left[
+\frac{P(x \mid A)}
+     {P(x \mid \varnothing)}
+\right]
+\end{equation}
+
+where $x$ is a sequence, $A$ is a covariance model, and $\varnothing$ is the null model of random sequence.
+
+\subsubsection{Sequence sampling}
+\label{sec:sequence-sampling}
+
+Sequences were sampled from each probabilistic model (covariance model) with the Infernal v.1.1.5 tool \emph{cmemit}.
+Sequences are sampled given the model's sequence and structure information, and are representative of the family described by the model.
+Sequence is generated by the model's underlying \ac{HMM}, and structure is from the model's underlying \ac{CM}.
+
+\subsubsection{Null sequence pool generation}
+\label{sec:dinuc-shuffle}
+
+Null sequences were generated by an implementation of the Dinucleotide Shuffle algorithm first described by \citet{Altschul1985}.
+This approach preserves 2-mer composition while destroying any underlying structure or sequence conservation.
+
+\subsection{Pairwise similarity scoring approaches}
+
+\subsubsection{Optimal sequence}
+\label{subsubsec:optimal-sequence}
+
+This approach approximates a shared ancestor, finding a single sequence that can score highly with both models at once, based on the comparison approach by \citet{Eggenhofer2013}.
+The optimal sequence, $s^{*}$, was approximated for each pair of models with a genetic algorithm.
+The initial population was seeded with the consensus sequence of each model and 15 sequences sampled from each model (Section~\ref{sec:sequence-sampling}).
+In each of 15 generations, every sequence was scored against both models (Section~\ref{sec:sequence-scoring}), and the top 25\% by the lower of the two bit scores (against each model) were retained as survivors and parents.
+The population was then restored to its original size with children, each produced either by crossover of two survivors (probability 0.3) or by mutating one survivor (probability 0.7).
+Mutation was by point substitution: two positions chosen uniformly at random were each replaced with a nucleotide drawn at random, so sequence length was not changed by mutation.
+This rate of mutation was chosen to allow for exploration of sequence space at a relatively low rate to retain some of the original sequence information.
+The search ran for a fixed number of generations, and the highest-scoring sequence found was taken as $s^{*}$.
+As the search is stochastic and limited in depth, $s^{*}$ approximates the optimum and its scores are a lower bound on those of the true optimal sequence.
+
+To make scores comparable between pairs of models, the summed bit score of $s^{*}$ against both models was normalised by the scores each model gives its own sequences, to give a similarity ratio,
+\begin{equation}
+  \label{eq:similarity-ratio}
+  \mathrm{SR}(A, B) = \frac{s(s^{*}, A) + s(s^{*}, B)}{\bar{s}_{A} + \bar{s}_{B}}
+\end{equation}
+where $x_1,\dots,x_N$ are sequences emitted from model $X$, so that $\bar{s}_{X}$ is the mean self score of $X$.
+The mean self score is defined as the mean of the scores of the emitted sequences against their own model.
+A ratio near 1 indicates that a single sequence scores about as well against both models as typical members score against their own.
+Implemented as custom Go v.1.27.1 code.
+
+\subsubsection{Median score and empirical p-value}
+\label{subsubsec:median-score}
+
+This approach asks how well the sequences of one family fit into another family's model, and vice versa.
+300 sequences were sampled from each family (Section~\ref{sec:sequence-sampling}) and scored against the other model (Section~\ref{sec:sequence-scoring}).
+
+% Notation
+Let $a_1,\dots,a_N$ be sequences emitted from model $A$, and let $s(x, B)$ denote the \emph{cmsearch} log-odds bit score of sequence $x$ against model $B$.
+
+% Observed statistic
+\begin{equation}
+  \label{eq:m-obs}
+  m_{\mathrm{obs}} = \mathrm{median}_{i=1,\dots,N}\; s(a_i, B)
+\end{equation}
+
+To generate null sequences, the sampled sequences were dinucleotide shuffled (Section~\ref{sec:dinuc-shuffle}).
+Null populations were bootstrapped from this pool with replacement and median bit scores were used to generate an empirical p-value (all with custom implementations in Go v.1.27.1).
+
+% Null pool
+Each $a_i$ is dinucleotide-shuffled once, $\tilde{a}_i = \mathrm{dinucshuffle}(a_i)$, giving a null pool of the same size as the observed set,
+\begin{equation}
+  \label{eq:null-pool}
+  \mathcal{P} = \left\{\, s(\tilde{a}_i, B) : i = 1,\dots,N \,\right\}.
+\end{equation}
+
+% Bootstrap null medians
+For $j = 1,\dots,n_{\mathrm{boot}}$, a bootstrap population $\mathcal{P}^{*}_j = \{x^{*}_{j,1},\dots,x^{*}_{j,N}\}$ is formed by drawing $N$ scores from $\mathcal{P}$ uniformly with replacement, with median
+\begin{equation}
+  \label{eq:boot-median}
+  m_j = \mathrm{median}\!\left(\mathcal{P}^{*}_j\right), \qquad j = 1,\dots,n_{\mathrm{boot}}.
+\end{equation}
+
+% Empirical p-value
+\begin{equation}
+  \label{eq:empirical-p}
+  p = \frac{1 + \#\{\, j : m_j \geq m_{\mathrm{obs}} \,\}}{n_{\mathrm{boot}} + 1}
+\end{equation}
+
+The reported metric of this approach is the sum of $m_{\mathrm{obs}}$ for both directions to give a single pair value.
+
+\subsubsection{Score distribution}
+\label{subsubsec:score-distribution}
+
+The third approach taken was driven by an observation that although the magnitude of $m_{\mathrm{obs}}$ (Equation~\ref{eq:m-obs}) is often small between same clan RNA families (Section~\ref{subsec:clan-benchmark}), distributional differences between $s(a_i, B)$ and $s(\tilde{a}_i, B)$ can still be seen. 
+The two-sample \ac{KS} test \citep{Smirnov1939} was applied to the observed scores $s(a_i, B)$ and the null pool $\mathcal{P}$ (Equation~\ref{eq:null-pool}), both of size $N$. 
+The test statistic, $D$, is the maximum vertical distance between the empirical cumulative distribution functions of the two sets. 
+It was computed using a custom Go v.1.27.1 implementation and is denoted $D_{A \rightarrow B}$ for sequences emitted from $A$ and scored against $B$.
+Reported combined score is simply $D_{A \rightarrow B} + D_{B \rightarrow A}$, used in the preliminary clan benchmark.
+
+\subsection{Analysis of pairwise similarity scores}
+\label{subsec:clustering-analysis}
+
+To test the practicality and performance of the pairwise similarity scoring approaches, they were applied to a benchmark set of Rfam families curated into clans (Section~\ref{subsec:clan-benchmark}).
+All curation and annotation sets and results are available (Appendix~\ref{sec:code-and-data-availability}).
+
+\label{subsec:clan-benchmark}
+
+Rfam families are curated into clans where they are deemed to be related and share common ancestry \citep{Ontiveros-Palacios2025}.
+A set of 44 families from various clans was curated from Rfam (version 15.0) to test whether the pairwise similarity approaches could recover clan relationships.
+All 946 possible pairs of families were scored with each approach.
+
+Separation of within-clan from other pairs was quantified as the area under the receiver operating characteristic curve (AUC), calculated from ranks as
+$\mathrm{AUC} = U / (n_{\mathrm{within}}\, n_{\mathrm{other}})$, where $U$ is the number of (within-clan, other) pairs of pairs for which the within-clan pair has the higher statistic, counting ties as one half. 
+This is the probability that a randomly chosen within-clan pair outscores a randomly chosen other pair. 
+An AUC of 0.5 indicates no separation and 1 indicates perfect separation. 
+The AUC makes no assumption about the distribution of the statistics and is unaffected by their scale. As pairs sharing a family are not independent, 95\% confidence intervals were obtained by bootstrapping over families.
+
+Data handling and plotting were done in R v.4.6.1 using the readr and ggplot2 v.4.0.3 packages \citep{Wickham2016}.
+Clustering was computed by pairwise distance and plotted with a dendrogram.
+Plotting and summary functions are available in the repository (Appendix~\ref{sec:code-and-data-availability}).
+
+% -------- ethics n stuff ------------
+
+\section{Ethics, MPI and EPA regulations}
+
+This project uses publicly available genomic sequence data and does not involve human participants, animal experimentation, or the construction of genetically modified organisms.
+
+No ethical approval, MPI, or EPA approvals are required at this stage. 
+Should the scope expand to require these approvals, they will be sought.

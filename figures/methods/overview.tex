@@ -15,10 +15,10 @@
     {\textbf{1. Database Curation}\\\footnotesize reference genomes, genome retrieval, Rfam models, protein domain profiles};
 
 \node[section, fill=catValidate!35, below left=2.6cm and -0.6cm of curation] (posctrl)
-    {\textbf{2. Positive Control Preparation}\\\footnotesize known RNA motif $\rightarrow$ recovered protein signal};
+    {\textbf{2. Positive Control Preparation}\\\footnotesize known structural RNA element $\rightarrow$ associated protein signal};
 
 \node[section, fill=catLocalize!35, below right=2.6cm and -0.6cm of curation] (discovery)
-    {\textbf{3. Computational Discovery Pipeline}\\\footnotesize protein domain $\rightarrow$ candidate RNA motif};
+    {\textbf{3. Computational Discovery Pipeline}\\\footnotesize protein domain $\rightarrow$ candidate structural RNA element};
 
 \draw[->] (dbs) -- (curation);
 \draw[->] (curation.south) -- ++(0,-1.2cm) -| (posctrl.north);
@@ -41,6 +41,7 @@
 
 \draw[->] (discovery) -- (iterexp) node[midway, right, sublbl, text width=2.6cm] {from \S3.6};
 \draw[->] (iterexp) -- (cmcluster);
+\node[sublbl, text width=3.2cm, align=center] at ($(cmcluster.north)+(+1.8,+0.6cm)$) {Novel method developed for this project};
 
 \node[draw=black, dashed, rounded corners=3pt, inner sep=0.4cm,
       fit=(iterexp)(cmcluster),

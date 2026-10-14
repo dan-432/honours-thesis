@@ -49,6 +49,10 @@
 \usepackage{amsmath}   % align, \operatorname
 \usepackage{amssymb}   % general math symbols
 
+\usepackage[explicit,compact]{titlesec}
+\titleformat{\chapter}[block]
+    {\bfseries\huge}{\filright\huge\thechapter.}{1ex}{\huge\filright #1}
+
 \newcommand{\ind}[1]{\mathbf{1}\!\left[\, #1 \,\right]}
 \newcommand{\sci}[2]{#1\!\times\!10^{#2}}   % scientific notation inside math mode
 % \usepackage[style=apa, backend=biber]{biblatex}
@@ -98,15 +102,18 @@
     \acro{iTOL}{interactive Tree Of Life}
     \acro{FMN}{Flavin Mononucleotide}
     \acro{SAM}{S-adenosylmethionine}
-    \acro{Gb}{Gigabyte}
-    \acro{Mb}{Megabyte}
+    \acro{GB}{Gigabyte}
+    \acro{MB}{Megabyte}
     \acro{CPU}{Central Processing Unit}
+    \acro{ETE}{Environment for Tree Exploration}
+    \acro{ipTM}{interaction predicted Template Modelling score}
+    \acro{PCR}{Polymerase Chain Reaction}
+    \acro{AUC}{Area Under the Curve}
   \end{acronym}
 }
 
 %\setlength{\parindent}{0pt}
 
-%%
 %% Set title, author and date.
 %%
 \title{A Protein First Computational Screen for Structured RNA Elements}
@@ -119,7 +126,7 @@
 %%
 \fullname{Daniel Dachs}
 \department{Department of Biochemistry}
-\dob{3 December 2003} %% date-of-birth
+\dob{12 December 2003} %% date-of-birth
 \address{710 Cumberland St, Dunedin, NZ}
 
 %%
@@ -155,7 +162,9 @@
 
 \cleardoublepage
 \bibliographystyle{cell}
-\bibliography{references}
+\begin{singlespace}
+  \bibliography{references}
+\end{singlespace}
 
 \include{appendices}
 

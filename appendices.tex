@@ -4,24 +4,21 @@
 \label{sec:code-and-data-availability}
 
 Code is available from:
-
 \begin{itemize}
     \item \url{https://github.com/dan-432/DarwinsRNAHunt} contains the positive control and discovery snakemake pipelines and associated analyses.
     \item \url{https://github.com/dan-432/cm-iterative-expansion} contains the logic for and analysis of the itertive expansion of candidate \ac{CM}s.
     \item \url{https://github.com/dan-432/cm-simile} contains the logic for and analysis of the pairwise similarity scoring of candidate \ac{CM}s
 \end{itemize}
+See top-level README files for further documentation on file structure and usage instructions.
 
-See top-level README files for further documentation on file structure and running instructions.
-
-Data and computed results are available from \dots
-
-[link to zenodo]
+Data and computed results are available from \url{doi.org/10.5281/zenodo.22927283}, all curation and download scripts are available in the code repositories above.
 
 \section{Supplimentary Tables}
 
-\input{tables/positive-control-pipeline-inputs.tex}
-
 \input{tables/discovery-filtering.tex}
+
+
+\input{tables/positive-control-pipeline-inputs.tex}
 
 \input{tables/discovery-pipeline-inputs.tex}
 
@@ -31,17 +28,7 @@ Data and computed results are available from \dots
 
 \input{tables/alphafoldinputs.tex}
 
-\input{tables/flagellin-hits.tex}
-
 \section{Supplimentary Figures}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.95\textwidth]{figures/methods/tradeoff.pdf}
-    \caption[Clustering parameter selection for positive control pipeline]{\textbf{Clustering parameter selection for positive control pipeline.}
-    The clustering step of the positive control pipeline was run with a range of parameters, and the number of clusters and singleton-genome clusters were recorded.}
-    \label{fig:poscontrol-clustering}
-\end{figure}
 
 \begin{figure}[H]
   \centering
@@ -103,6 +90,13 @@ Data and computed results are available from \dots
         \caption{Candidate 40 (F = 56.67)}
         \label{fig:cand40-struct}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/results/drh-iteritive-expansion-structures/cluster_539_alignment_02_1.cacofold.R2R.sto.pdf}
+        \caption{Candidate 539 (F = 53.85)}
+        \label{fig:cand539-struct}
+    \end{subfigure}
 
     \caption[Predicted covarying secondary structures of remaining FMN candidates, part 1]{\textbf{Predicted covarying secondary structures of remaining FMN riboswitch candidates (part 1 of 2).} R-scape CaCoFold structures generated from iteratively expanded alignments, ordered by F-score.}
     \label{fig:drh-appendix-structures-1}
@@ -145,6 +139,16 @@ Data and computed results are available from \dots
 \end{figure}
 \clearpage
 
+\begin{figure}[H]
+    \centering
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/results/BLUFwithFMNRiboswitch.png} 
+    \caption[Predicted \ac{BLUF} RNA structure complex negative control]{\textbf{Predicted ribonucleoprotein complex structure of BLUF with negative control RNA.}
+    Predicted structures of \ac{FMN} riboswitch and BLUF protein domain sequence.
+    Predictions were made with AlphaFold 3 and the highest-confidence model is shown.
+    \label{fig:bluf-rnp-negative-control}}
+\end{figure}
+    
 \begin{figure}[H]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
